@@ -4,9 +4,13 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import Rating from "@mui/material/Rating";
+import Typography from "@mui/material/Typography";
 
 export default function Survey() {
   const [grade, setGrade] = useState();
+  const [value, setValue] = useState(2);
+
   const handleGrade = (event) => {};
 
   return (
@@ -51,6 +55,10 @@ export default function Survey() {
         </Select>
       </FormControl>
       <h1>taken date and written date</h1>
+      <Typography component='legend'>Controlled</Typography>
+
+      <Rating name='no-value' value={null} />
+
       <h2>instructor select</h2>
       <h2>course select</h2>
       <h2>grade select</h2>

@@ -1,8 +1,11 @@
 import Head from "next/head";
+import { useUser } from "@auth0/nextjs-auth0/dist/frontend/use-user";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
+  const { user, error, isLoading } = useUser();
+  console.log(user);
   return (
     <div className={styles.container}>
       <Head>
@@ -12,6 +15,8 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
+        <a href='/api/auth/login'>Login</a>
+
         {/* <h1 className={styles.title}>
           Welcome to <a href='https://nextjs.org'>Next.js!</a>
           <a href='faisal@gmail.com'>faisal</a>

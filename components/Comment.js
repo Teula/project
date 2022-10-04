@@ -12,14 +12,14 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function Comment(props) {
-  const tags = props.tags.map((tag) => <Chip label={tag} color='primary' />);
+  // const tags = props.tags.map((tag) => <Chip label={tag} color='primary' />);
   return (
     <div>
       <Grid container spacing={2}>
         <Grid item xs={6}>
           <div>
-            <Avatar alt='Remy Sharp' src={props.pic} /> <br />
-            {tags}
+            {/* <Avatar alt='Remy Sharp' src={props.pic} /> <br />
+            {tags} */}
           </div>
         </Grid>
         <Grid item xs={6}>

@@ -30,7 +30,6 @@ export default async function (req, res) {
     case "GET": {
       console.log("c", college);
       const majors = await college.majors;
-
       const courses = await college.courses;
 
       // const courses = await Course.find()

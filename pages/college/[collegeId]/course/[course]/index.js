@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import styles from "../../../../../styles/College.module.css";
 import MyPieChart from "../../../../../components/charts/MyPieChart.js";
 import ChartTab from "../../../../../components/ChartTab";
+import Comment from "../../../../../components/Comment";
 
 // export async function getStaticProps(context) {
 //   // const {params} = context
@@ -102,6 +103,7 @@ export default function id() {
           </button>
           <div className={styles.TabBox}>{tab}</div>
         </div>
+        <Comment />
       </section>
     </>
   );
