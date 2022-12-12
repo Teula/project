@@ -2,14 +2,14 @@ import "../styles/globals.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 // pages/_app.js
 import React from "react";
-import { UserProvider } from "@auth0/nextjs-auth0";
+import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
+import NavBar from "../components/NavBar";
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <div>
-      <UserProvider>
-        <Component {...pageProps} />
+      <SessionProvider session={session}>
         <Head>
           <>
             <link rel='preconnect' href='https://fonts.googleapis.com' />
@@ -28,7 +28,9 @@ function MyApp({ Component, pageProps }) {
             />
           </>
         </Head>
-      </UserProvider>
+        <NavBar />
+        <Component {...pageProps} />
+      </SessionProvider>
     </div>
   );
 }

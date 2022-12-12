@@ -16,14 +16,20 @@ const CommentSchema = new mongoose.Schema({
   dislikes: {
     type: Number,
   },
+  user: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  },
+  course: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
+  },
+  instructor: {
+    type: { type: mongoose.Schema.Types.ObjectId, ref: "Instructor" },
+  },
   replies: [
     {
       reply: {
         type: String,
       },
-      // user: {
-      // type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-      // },
     },
   ],
 });
