@@ -10,12 +10,16 @@ const CommentSchema = new mongoose.Schema({
       type: String,
     },
   ],
-  likes: {
-    type: Number,
-  },
-  dislikes: {
-    type: Number,
-  },
+  likes: [
+    {
+      type: String,
+    },
+  ],
+  dislikes: [
+    {
+      type: String,
+    },
+  ],
   user: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },

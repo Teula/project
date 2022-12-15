@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CourseCard from "../../../../components/CourseCard";
-import { Container, Grid } from "@mui/material";
+import { Button, Container, Grid } from "@mui/material";
 import SearchBar from "../../../../components/SearchBar";
 import Filter from "../../../../components/Filter";
 import AddCourse from "../../../../components/AddCourse";
 import getCourses from "../../../../lib/backend/getCourses";
 import DrawerAdmain from "../../../../components/mui/DrawerAdmain";
 import { useRouter } from "next/router";
+import Fuse from "fuse.js";
 
 export async function getStaticProps(context) {
   console.log("name", context.params.collegeId);
@@ -60,6 +61,19 @@ export default function index(props) {
       }
     );
   };
+  const handleDelete = async (_id) => {
+    console.log("post", _id);
+    const data = await fetch(
+      `http://localhost:3000/api/college/${router.query.collegeId}/courses/${router.query.course}`,
+      {
+        method: "DELETE",
+        body: JSON.stringify({ _id }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
+  };
 
   const [filtered, setFiltered] = useState();
   const { courses, majors } = props;
@@ -80,20 +94,71 @@ export default function index(props) {
     }
   };
   // const filterdCourses = courses.map();
+  const options = {
+    includeScore: true,
+    // Search in `author` and in `tags` array
+    keys: ["major", "name"],
+  };
+  const [search, setSearch] = useState("");
+  const fuse = new Fuse(courses, options);
+  const searchResult = fuse.search(search).map((result) => result.item);
 
-  const course = courses.map((c) => (
+  console.log("result", searchResult);
+  console.log("result", courses);
+  let renderC = courses;
+  if (searchResult.length) {
+    renderC = searchResult;
+  }
+
+  const course = renderC.map((c) => (
     <Grid item xs={4}>
-      <CourseCard course={c} />
+      <CourseCard handleDelete={handleDelete} course={c} key={c.id} />
     </Grid>
   ));
+
+  // const [body, setBody] = useState(() => {
+  //   let course = courses.map((c) => (
+  //     <Grid item xs={4}>
+  //       <CourseCard handleDelete={handleDelete} course={c} key={c.id} />
+  //     </Grid>
+  //   ));
+  //   return [{ course }];
+  // });
+  // const test1 = () => {
+  //   setBody(() => {
+  //     let course = courses.map((c) => (
+  //       <Grid item xs={4}>
+  //         <CourseCard handleDelete={handleDelete} course={c} key={c.id} />
+  //       </Grid>
+  //     ));
+  //     return [{ course }];
+  //   });
+  // };
+  // useEffect(() => {
+  //   console.log("useeff", searchResult);
+  //   test1();
+  // }, [searchResult]);
 
   // console.log(courses);
   // const filterdCourses = courses.map((f) => {});
 
   return (
     // fix container
+
     <div>
-      <Container maxWidth='md'>
+      {/* <ol>
+        {searchResult.map((result) => (
+          <li key={result}>{result}</li>
+        ))}
+      </ol> */}
+      <input
+        type='text'
+        onChange={(event) => {
+          setSearch(event.target.value);
+        }}
+      />
+
+      <Container maxWidth='lg'>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <h1>All Course</h1>
@@ -105,6 +170,7 @@ export default function index(props) {
             <SearchBar get={getSearch} />
           </Grid>
           {course}
+          {/* {body} */}
         </Grid>
       </Container>
       {/* <Container maxWidth='sm'>

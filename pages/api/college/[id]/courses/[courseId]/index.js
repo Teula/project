@@ -1,6 +1,7 @@
 import dbConnect from "../../../../../../utils/dbConnect";
 import User from "../../../../../../models/User";
 import { Comment } from "../../../../../../models/Comment";
+import { Course } from "../../../../../../models/Course";
 
 export default async function handler(req, res) {
   const { method, query } = req;
@@ -14,6 +15,9 @@ export default async function handler(req, res) {
     });
     console.log("ttest", user);
     await newComment.save();
+  }
+  if (method == "DELETE") {
+    await Course.findByIdAndRemove(req.body._id);
   }
   // console.log("uyes");
   //   const user = await User.find();

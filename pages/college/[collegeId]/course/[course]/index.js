@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../../../../../styles/College.module.css";
 import MyPieChart from "../../../../../components/charts/MyPieChart.js";
 import ChartTab from "../../../../../components/ChartTab";
@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import { FitnessCenterOutlined } from "@material-ui/icons";
 import Infooo from "../../../../../components/Infooo";
 import NavBar from "../../../../../components/NavBar";
+import { useRef } from "react";
 
 // export async function getStaticProps(context) {
 //   // const {params} = context
@@ -26,7 +27,7 @@ import NavBar from "../../../../../components/NavBar";
 export async function getServerSideProps(context) {
   // console.log(context.params.course);
   const response = await fetch(
-    `http://localhost:3000/api/${context.params.course}/comment`
+    `http://localhost:3000/api/course/${context.params.course}/comment`
   );
   //
   const data = await response.json();
@@ -45,13 +46,68 @@ export async function getServerSideProps(context) {
 }
 
 export default function id(props) {
+  const { data: session, status } = useSession();
+  const isMounted = useRef(false);
+  const handleRating = async () => {
+    const Uid = session.user._id;
+    const data = await fetch(`http://localhost:3000/api/comment/${commentId}`, {
+      method: "POST",
+      body: JSON.stringify({ like, dislike, Uid }),
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+  };
+  // useEffect(() => {
+  //   const comments = alldata.map((c) => {
+  //     return (
+  //       <Comment
+  //         key={c._id}
+  //         text={c.text}
+  //         id={c._id}
+  //         likes={c.likes}
+  //         dislikes={c.dislikes}
+  //         getlike={getlike}
+  //         getdislike={getdislike}
+  //         currentUser={session.user._id || null}
+  //       />
+  //     );
+
+  //     // console.log(c);
+  //   });
+  // }, [status == "authenticated"]);
+
   // change tabs
   const { alldata } = props;
-  const comments = alldata.map((c) => {
-    return <Comment text={c.text} />;
+  const [like, setLike] = useState();
+  const [dislike, setDislike] = useState();
+  const [commentId, setCommentId] = useState();
+  useEffect(() => {
+    if (isMounted.current) {
+      handleRating();
+      console.log("yesss");
+    } else {
+      isMounted.current = true;
+    }
+  }, [like, dislike]);
+  // useEffect(() => {}, [dislike]);
+  const getlike = (id) => {
+    setLike(1);
+    setDislike(0);
+    setCommentId(id);
+  };
+  const getdislike = (id) => {
+    setLike(0);
+    setDislike(1);
+    setCommentId(id);
+  };
 
-    // console.log(c);
-  });
+  // const [comments, setComments] = useState(() => {
+
+  // });
+
+  // console.log(c);
+
   // console.log(alldata.comment);
   const [tab, setTab] = useState();
   const handleTab = (event) => {
@@ -72,7 +128,6 @@ export default function id(props) {
     }
   };
 
-  const { data: session, status } = useSession();
   let uemal;
   if (session) {
     uemal = <p>Signed in as {session.user.name}</p>;
@@ -86,23 +141,40 @@ export default function id(props) {
       setIsShown(true);
     }
   };
+  console.log("user here", alldata);
+  // const comments = alldata.map((c) => {
+  //   return (
+  //     <Comment
+  //       key={c._id}
+  //       text={c.text}
+  //       id={c._id}
+  //       likes={c.likes}
+  //       dislikes={c.dislikes}
+  //       getlike={getlike}
+  //       getdislike={getdislike}
+  //       currentUser={session.user._id || null}
+  //     />
+  //   );
+  // });
 
   return (
     <div>
-      {/* <NavBar /> */}
-      <section className={styles.Header}>
-        <div className={styles.HeaderGrid}>
-          <div className={styles.HeaderText}>
-            <h1 className={styles.HeaderTitle}>Course Name</h1>
-            <p>Course Number</p>
-          </div>
-          <div className={styles.HeaderImage}>
-            <img className={styles.MainImage} src='' alt='' />
-          </div>
-        </div>
-      </section>
-      <div className={styles.body}>
-        {/* <button
+      {status == "authenticated" && (
+        <div>
+          {/* <NavBar /> */}
+          <section className={styles.Header}>
+            <div className={styles.HeaderGrid}>
+              <div className={styles.HeaderText}>
+                <h1 className={styles.HeaderTitle}>Course Name</h1>
+                <p>Course Number</p>
+              </div>
+              <div className={styles.HeaderImage}>
+                <img className={styles.MainImage} src='' alt='' />
+              </div>
+            </div>
+          </section>
+          <div className={styles.body}>
+            {/* <button
         // onMouseEnter={() => setIsShown(true)}
         // onMouseLeave={() => setIsShown(false)}
         onClick={() => test()}>
@@ -113,27 +185,54 @@ export default function id(props) {
           I'll appear when you hover over the button.
         </div>
       )} */}
-        <Infooo />
-        <section>
-          <div className={styles.ChartGrid}>
-            <button className={styles.ChartBtn} onClick={handleTab} value={0}>
-              Graph-1
-            </button>
-            <button className={styles.ChartBtn} onClick={handleTab} value={1}>
-              Graph-2
-            </button>
-            <button className={styles.ChartBtn} onClick={handleTab} value={2}>
-              Graph-3
-            </button>
-            <button className={styles.ChartBtn} onClick={handleTab} value={3}>
-              Graph-4
-            </button>
-            <div className={styles.TabBox}>{tab}</div>
+            <Infooo />
+            <section>
+              <div className={styles.ChartGrid}>
+                <button
+                  className={styles.ChartBtn}
+                  onClick={handleTab}
+                  value={0}>
+                  Graph-1
+                </button>
+                <button
+                  className={styles.ChartBtn}
+                  onClick={handleTab}
+                  value={1}>
+                  Graph-2
+                </button>
+                <button
+                  className={styles.ChartBtn}
+                  onClick={handleTab}
+                  value={2}>
+                  Graph-3
+                </button>
+                <button
+                  className={styles.ChartBtn}
+                  onClick={handleTab}
+                  value={3}>
+                  Graph-4
+                </button>
+                <div className={styles.TabBox}>{tab}</div>
+              </div>
+            </section>
+            {alldata.map((c) => {
+              return (
+                <Comment
+                  key={c._id}
+                  text={c.text}
+                  id={c._id}
+                  likes={c.likes}
+                  dislikes={c.dislikes}
+                  getlike={getlike}
+                  getdislike={getdislike}
+                  currentUser={session.user._id || null}
+                />
+              );
+            })}
           </div>
-        </section>
-        {comments}
-      </div>
-      <div className={styles.footer}></div>
+          <div className={styles.footer}></div>
+        </div>
+      )}
     </div>
   );
 }

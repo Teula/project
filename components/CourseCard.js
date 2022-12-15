@@ -17,6 +17,7 @@ import {
   Stack,
   Tooltip,
 } from "@mui/material";
+import { useSession } from "next-auth/react";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -32,12 +33,18 @@ import SchoolIcon from "@mui/icons-material/School";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 export default function CourseCard(props) {
+  const { data: session, status } = useSession();
   const { course } = props;
+  console.log(course);
   const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+  const adminDelete = () => {
+    props.handleDelete(course.id);
+  };
+
   return (
     <div>
       <Card sx={{ maxWidth: 345 }}>
@@ -138,6 +145,9 @@ export default function CourseCard(props) {
           </AccordionDetails>
         </Accordion> */}
       </Card>
+      {session && session.user.isAdmin == true && (
+        <button onClick={adminDelete}>admin delete only</button>
+      )}
     </div>
   );
 }
