@@ -110,6 +110,7 @@ const actions = [
 ];
 export default function Comment(props) {
   const { data: session, status } = useSession();
+  console.log("props", props.user);
   console.log("currentU", props.currentUser);
   const isMounted = useRef(false);
   // const tags = props.tags.map((tag) => <Chip label={tag} color='primary' />);
@@ -302,8 +303,35 @@ export default function Comment(props) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  // const userData = props.user.map((u) => {
+  //   return (
+  //     <div>
+  //       {u._id}
+  //       {u.email}
+  //     </div>
+  //   );
+  // });
+
   return (
     <div>
+      {/* {userData} */}
+      <h1>
+        // if not hidden //
+        {props.user[0].name}
+        // tags
+        {props.user[0].year}
+        //dates
+        {props.updated}
+        {props.created}
+        //
+        {props.again}
+        {props.grade} // if to convert
+        {props.user[0].gpa}
+        {props.user[0].isAdmin} // if statment
+        {props.user[0].major}
+        {props.user[0].campus}
+      </h1>
+
       <div className={styles.commentsSpace}>
         <div className={styles.commentCard}>
           <div className={styles.firstColumn}>
@@ -323,6 +351,9 @@ export default function Comment(props) {
             <div className={styles.firstRowComment}>
               <div className={styles.infoComment}>
                 <div className={styles.infoCom}>Grade</div>
+                <div className={styles.infoCom}>online</div>
+                <div className={styles.infoCom}>online</div>
+                <div className={styles.infoCom}>online</div>
                 <div className={styles.infoCom}>online</div>
               </div>
               {/* <div className={styles.commentDate}>

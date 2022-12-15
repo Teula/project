@@ -12,6 +12,13 @@ const InstructorSchema = new mongoose.Schema({
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
 
   // might need to import
+
+  rating: {
+    type: Number,
+  },
+  college: {
+    type: String,
+  },
 });
 
 export const Instructor =

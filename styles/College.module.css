@@ -387,3 +387,29 @@
   color: white;
   margin-top: 2rem;
 }
+/* CourseCard Compnent */
+.chatCount {
+  display: flex;
+  /* justify-content: flex-end; */
+  padding-right: 10px;
+  padding-top: 1px;
+}
+.numberOfChat {
+  font-size: 14px;
+  text-align: center;
+  padding-left: 3px;
+}
+.adminDelete {
+  width: 345px;
+  display: flex;
+  padding: 5px;
+  justify-content: flex-end;
+}
+/* .chatOverStyle {
+  display: flex;
+  margin-left: 35%;
+  width: 30%;
+  margin-top: 5px;
+  justify-content: space-between;
+  align-self: center;
+} */

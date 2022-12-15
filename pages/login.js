@@ -7,6 +7,9 @@ import { getError } from "../utils/error";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 
+import styles from "../styles/Survey.module.css";
+import TextField from "@mui/material/TextField";
+
 export default function LoginScreen() {
   const { data: session, status } = useSession();
 
@@ -43,14 +46,25 @@ export default function LoginScreen() {
     return <p>Signed in as {session.user.email}</p>;
   }
   return (
-    <form
-      className='mx-auto max-w-screen-md'
-      onSubmit={handleSubmit(submitHandler)}>
-      <h1 className='mb-4 text-xl'>Login</h1>
-      <div className='mb-4'>
-        <label htmlFor='email'>Email</label>
-        <input
+    <form className={styles.logInGrid} onSubmit={handleSubmit(submitHandler)}>
+      <div className={styles.mb}>
+        <div className={styles.pageLogIn2}>Log In</div>
+
+        <Link href={`/register?redirect=${redirect || "/"}`}>
+          <div className={styles.pageRegister2}>Register</div>
+        </Link>
+      </div>
+      <h1 className={styles.title}>Log In</h1>
+      <div className={styles.mb}>
+        {/* <label htmlFor='email'>Email</label> */}
+        <TextField
           type='email'
+          id='email'
+          label='Email'
+          variant='filled'
+          size='large'
+          sx={{ maxWidth: 420, minWidth: 420 }}
+          autoFocus
           {...register("email", {
             required: "Please enter email",
             pattern: {
@@ -58,35 +72,38 @@ export default function LoginScreen() {
               message: "Please enter valid email",
             },
           })}
-          className='w-full'
-          id='email'
-          autoFocus></input>
+        />
         {errors.email && (
-          <div className='text-red-500'>{errors.email.message}</div>
+          <div className={styles.errorText}>{errors.email.message}</div>
         )}
       </div>
-      <div className='mb-4'>
-        <label htmlFor='password'>Password</label>
-        <input
+      <div className={styles.mb}>
+        {/* <label htmlFor='password'>Password</label> */}
+        <TextField
           type='password'
+          id='password'
+          label='Password'
+          variant='filled'
+          size='large'
+          sx={{ maxWidth: 420, minWidth: 420 }}
+          autoFocus
           {...register("password", {
             required: "Please enter password",
             minLength: { value: 6, message: "password is more than 5 chars" },
           })}
-          className='w-full'
-          id='password'
-          autoFocus></input>
+        />
+
         {errors.password && (
-          <div className='text-red-500 '>{errors.password.message}</div>
+          <div className={styles.errorText}>{errors.password.message}</div>
         )}
       </div>
-      <div className='mb-4 '>
-        <button className='primary-button'>Login</button>
+      <div className={styles.mb}>
+        <button className={styles.btnRegister}>Login</button>
       </div>
-      <div className='mb-4 '>
+      {/* <div className={styles.mbLink}>
         Don&apos;t have an account? &nbsp;
         <Link href={`/register?redirect=${redirect || "/"}`}>Register</Link>
-      </div>
+      </div> */}
     </form>
   );
 }

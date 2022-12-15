@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import axios from "axios";
 import styles from "../styles/Survey.module.css";
+import TextField from "@mui/material/TextField";
 
 export default function LoginScreen() {
   const { data: session } = useSession();
@@ -49,30 +50,47 @@ export default function LoginScreen() {
   };
   return (
     <form
-      className='mx-auto max-w-screen-md'
+      className={styles.registerGrid}
       onSubmit={handleSubmit(submitHandler)}
       id='form'>
-      <h1 className='mb-4 text-xl'>Create Account</h1>
-      <div className='mb-4'>
-        <label htmlFor='name'>Name</label>
-        <input
-          type='text'
-          className='w-full'
+      <div className={styles.mb}>
+        <Link href={`/login?redirect=${redirect || "/"}`}>
+          <div className={styles.pageLogIn}>Log In</div>
+        </Link>
+
+        <div className={styles.pageRegister}>Register</div>
+      </div>
+      <h1 className={styles.title}>Create An Account</h1>
+      <div className={styles.mb}>
+        {/* <label htmlFor='name'>Name</label> */}
+        <TextField
+          // className={styles.test}
+          type='name'
           id='name'
+          label='Name'
+          variant='filled'
+          size='large'
           autoFocus
+          sx={{ maxWidth: 420, minWidth: 420 }}
           {...register("name", {
             required: "Please enter name",
           })}
         />
+        {/* <input type='text' className='w-full' id='name' autoFocus /> */}
         {errors.name && (
-          <div className='text-red-500'>{errors.name.message}</div>
+          <div className={styles.errorText}>{errors.name.message}</div>
         )}
       </div>
 
-      <div className='mb-4'>
-        <label htmlFor='email'>Email</label>
-        <input
+      <div className={styles.mb}>
+        {/* <label htmlFor='email'>Email</label> */}
+        <TextField
           type='email'
+          id='email'
+          label='Email'
+          variant='filled'
+          autoFocus
+          sx={{ maxWidth: 420, minWidth: 420 }}
           {...register("email", {
             required: "Please enter email",
             pattern: {
@@ -81,33 +99,38 @@ export default function LoginScreen() {
               message: "Please enter valid email",
             },
           })}
-          className='w-full'
-          id='email'></input>
+        />
         {errors.email && (
-          <div className='text-red-500'>{errors.email.message}</div>
+          <div className={styles.errorText}>{errors.email.message}</div>
         )}
       </div>
-      <div className='mb-4'>
-        <label htmlFor='password'>Password</label>
-        <input
+      <div className={styles.mb}>
+        {/* <label htmlFor='password'>Password</label> */}
+        <TextField
           type='password'
+          id='password'
+          label='Password'
+          variant='filled'
+          autoFocus
+          sx={{ maxWidth: 420, minWidth: 420 }}
           {...register("password", {
             required: "Please enter password",
             minLength: { value: 6, message: "password is more than 6 chars" },
           })}
-          className='w-full'
-          id='password'
-          autoFocus></input>
+        />
         {errors.password && (
-          <div className='text-red-500 '>{errors.password.message}</div>
+          <div className={styles.errorText}>{errors.password.message}</div>
         )}
       </div>
-      <div className='mb-4'>
-        <label htmlFor='confirmPassword'>Confirm Password</label>
-        <input
-          className='w-full'
-          type='password'
+      <div className={styles.mb}>
+        {/* <label htmlFor='confirmPassword'>Confirm Password</label> */}
+        <TextField
+          type='Password'
           id='confirmPassword'
+          label='Confirm Password'
+          variant='filled'
+          autoFocus
+          sx={{ maxWidth: 420, minWidth: 420 }}
           {...register("confirmPassword", {
             required: "Please enter confirm password",
             validate: (value) => value === getValues("password"),
@@ -118,16 +141,18 @@ export default function LoginScreen() {
           })}
         />
         {errors.confirmPassword && (
-          <div className='text-red-500 '>{errors.confirmPassword.message}</div>
+          <div className={styles.errorText}>
+            {errors.confirmPassword.message}
+          </div>
         )}
         {errors.confirmPassword &&
           errors.confirmPassword.type === "validate" && (
-            <div className='text-red-500 '>Password do not match</div>
+            <div className={styles.errorText}>Password do not match</div>
           )}
       </div>
 
-      <div className='mb-4 '>
-        <button className='primary-button'>Register</button>
+      <div className={styles.mb}>
+        <button className={styles.btnRegister}>Register</button>
       </div>
       {/* <div className='mb-4 '>
         Don&apos;t have an account? &nbsp;
@@ -136,3 +161,87 @@ export default function LoginScreen() {
     </form>
   );
 }
+
+{
+  /* <form
+  className='mx-auto max-w-screen-md'
+  onSubmit={handleSubmit(submitHandler)}
+  id='form'>
+  <h1 className='mb-4 text-xl'>Create Account</h1>
+  <div className='mb-4'>
+    <label htmlFor='name'>Name</label>
+    <input
+      type='text'
+      className='w-full'
+      id='name'
+      autoFocus
+      {...register("name", {
+        required: "Please enter name",
+      })}
+    />
+    {errors.name && <div className='text-red-500'>{errors.name.message}</div>}
+  </div>
+
+  <div className='mb-4'>
+    <label htmlFor='email'>Email</label>
+    <input
+      type='email'
+      {...register("email", {
+        required: "Please enter email",
+        pattern: {
+          value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
+          // value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/i,
+          message: "Please enter valid email",
+        },
+      })}
+      className='w-full'
+      id='email'></input>
+    {errors.email && <div className='text-red-500'>{errors.email.message}</div>}
+  </div>
+  <div className='mb-4'>
+    <label htmlFor='password'>Password</label>
+    <input
+      type='password'
+      {...register("password", {
+        required: "Please enter password",
+        minLength: { value: 6, message: "password is more than 6 chars" },
+      })}
+      className='w-full'
+      id='password'
+      autoFocus></input>
+    {errors.password && (
+      <div className='text-red-500 '>{errors.password.message}</div>
+    )}
+  </div>
+  <div className='mb-4'>
+    <label htmlFor='confirmPassword'>Confirm Password</label>
+    <input
+      className='w-full'
+      type='password'
+      id='confirmPassword'
+      {...register("confirmPassword", {
+        required: "Please enter confirm password",
+        validate: (value) => value === getValues("password"),
+        minLength: {
+          value: 6,
+          message: "confirm password is more than 5 chars",
+        },
+      })}
+    />
+    {errors.confirmPassword && (
+      <div className='text-red-500 '>{errors.confirmPassword.message}</div>
+    )}
+    {errors.confirmPassword && errors.confirmPassword.type === "validate" && (
+      <div className='text-red-500 '>Password do not match</div>
+    )}
+  </div>
+
+  <div className='mb-4 '>
+    <button className='primary-button'>Register</button>
+  </div>
+  {/* <div className='mb-4 '>
+        Don&apos;t have an account? &nbsp;
+        <Link href={`/register?redirect=${redirect || "/"}`}>Register</Link>
+      </div> */
+}
+// </form>; */}

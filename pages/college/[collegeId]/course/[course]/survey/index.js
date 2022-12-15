@@ -27,11 +27,25 @@ import Done from "@mui/icons-material/Done";
 import Typography from "@mui/joy/Typography";
 import CropSquareIcon from "@mui/icons-material/CropSquare";
 
-export default function survey() {
+export async function getServerSideProps(context) {
+  const response = await fetch(
+    `http://localhost:3000/api/college/${context.params.collegeId}/courses`
+  );
+  const courses = await response.json();
+  const response1 = await fetch(
+    `http://localhost:3000/api/college/${context.params.collegeId}/instructors`
+  );
+  const instructors = await response1.json();
+  console.log(instructors, courses);
+
+  return {
+    props: { courses, instructors }, // will be passed to the page component as props
+  };
+}
+
+export default function survey(props) {
   const { data: session, status } = useSession();
   const router = useRouter();
-
-  const [grade, setGrade] = React.useState("");
 
   const handleChange = (event) => {
     setGrade(event.target.value);
@@ -118,7 +132,18 @@ export default function survey() {
       // /api/college/620dfbb23d2d0a1b624131a8/courses/620dfbb23d2d0a1b624131b6
       {
         method: "POST",
-        body: JSON.stringify({ comment, session }),
+        body: JSON.stringify({
+          comment,
+          session,
+          ratePro,
+          diffPro,
+          takeAgain,
+          courseDiff,
+          grade,
+          hide,
+          getIns,
+          getCourse,
+        }),
         headers: {
           "Content-type": "application/json",
         },
@@ -128,11 +153,36 @@ export default function survey() {
 
   const [again, setAgain] = React.useState("flex-start");
   const [name, setName] = React.useState("flex-start");
+  const fillcourses = props.courses.courses.map((c) => {
+    return (
+      <MenuItem value={c._id} key={c._id}>
+        {c.code}/{c.name}
+      </MenuItem>
+    );
+  });
+  const fillInstructors = props.instructors.instructors.map((i) => {
+    return (
+      <MenuItem key={i._id} value={i._id}>
+        {i.name}
+      </MenuItem>
+    );
+  });
 
   // function transform(value) {
   //   return value <= 1 && value !== 0 ? `${value * 100}%` : value;
   // }
+  console.log("last", props.courses.courses);
+  const [ratePro, setRatePro] = useState();
+  const [diffPro, setDiff] = useState();
+  const [takeAgain, setTakeAgain] = useState();
+  const [courseDiff, setCourseDiff] = useState();
+  const [grade, setGrade] = useState();
+  const [hide, setHide] = useState();
 
+  //ins course
+  const [getCourse, setGetCourse] = useState();
+  const [getIns, setGetins] = useState();
+  console.log("c", getCourse);
   return (
     <div>
       {/* <Survey /> */}
@@ -152,19 +202,13 @@ export default function survey() {
                   <Select
                     labelId='demo-simple-select-label'
                     id='demo-simple-select'
-                    value={grade}
-                    label='Grade'
-                    onChange={handleChange}>
-                    <MenuItem value='A+'>A+</MenuItem>
-                    <MenuItem value='A'>A</MenuItem>
-                    <MenuItem value='B+'>B+</MenuItem>
-                    <MenuItem value='B'>B</MenuItem>
-                    <MenuItem value='C+'>C+</MenuItem>
-                    <MenuItem value='C'>C</MenuItem>
-                    <MenuItem value='D+'>D</MenuItem>
-                    <MenuItem value='D'>D</MenuItem>
-                    <MenuItem value='F'>F</MenuItem>
-                    <MenuItem value='Hidden'>Hidden</MenuItem>
+                    value={props.courses.courses._id}
+                    defaultValue=''
+                    label='Course'
+                    onChange={(event) => {
+                      setGetCourse(event.target.value);
+                    }}>
+                    {fillcourses}
                   </Select>
                 </FormControl>
               </Box>
@@ -178,19 +222,13 @@ export default function survey() {
                   <Select
                     labelId='demo-simple-select-label'
                     id='demo-simple-select'
-                    value={grade}
-                    label='Grade'
-                    onChange={handleChange}>
-                    <MenuItem value='A+'>A+</MenuItem>
-                    <MenuItem value='A'>A</MenuItem>
-                    <MenuItem value='B+'>B+</MenuItem>
-                    <MenuItem value='B'>B</MenuItem>
-                    <MenuItem value='C+'>C+</MenuItem>
-                    <MenuItem value='C'>C</MenuItem>
-                    <MenuItem value='D+'>D</MenuItem>
-                    <MenuItem value='D'>D</MenuItem>
-                    <MenuItem value='F'>F</MenuItem>
-                    <MenuItem value='Hidden'>Hidden</MenuItem>
+                    value={props.instructors.instructors._id}
+                    defaultValue=''
+                    label='Instructor'
+                    onChange={(event) => {
+                      setGetins(event.target.value);
+                    }}>
+                    {fillInstructors}
                   </Select>
                 </FormControl>
               </Box>
@@ -205,10 +243,15 @@ export default function survey() {
                     // onClick={getV}
                     name='highlight-selected-only'
                     defaultValue={3}
+                    value={ratePro}
                     IconContainerComponent={IconContainer}
                     getLabelText={(value) => customIcons[value].label}
                     highlightSelectedOnly
                     className={styles.ratting}
+                    onChange={(event) => {
+                      setRatePro(parseInt(event.target.value));
+                      console.log(event.target.value);
+                    }}
                   />
                 </div>
               </div>
@@ -225,6 +268,10 @@ export default function survey() {
                     getLabelText={(value) => customIcons[value].label}
                     highlightSelectedOnly
                     className={styles.ratting}
+                    value={diffPro}
+                    onChange={(event) => {
+                      setDiff(parseInt(event.target.value));
+                    }}
                   />
                 </div>
               </div>
@@ -237,9 +284,12 @@ export default function survey() {
                     <RadioGroup
                       row
                       aria-labelledby='segmented-controls-example'
-                      name='again'
-                      value={again}
-                      onChange={(event) => setAgain(event.target.value)}
+                      name='takeAgain'
+                      value={takeAgain ? takeAgain : null}
+                      onChange={(event) => {
+                        setTakeAgain(event.target.value);
+                        console.log(event.target.value);
+                      }}
                       sx={{
                         marginTop: 3,
                         fontSize: 16,
@@ -313,10 +363,14 @@ export default function survey() {
                     // onClick={getV}
                     name='highlight-selected-only'
                     defaultValue={3}
+                    value={courseDiff}
                     IconContainerComponent={IconContainer}
                     getLabelText={(value) => customIcons[value].label}
                     highlightSelectedOnly
                     className={styles.ratting}
+                    onChange={(event) => {
+                      setCourseDiff(parseInt(event.target.value));
+                    }}
                   />
                 </div>
               </div>
@@ -334,19 +388,20 @@ export default function survey() {
                     <Select
                       labelId='demo-simple-select-label'
                       id='demo-simple-select'
-                      value={grade}
+                      value={grade ? grade : 4}
                       label='Grade'
-                      onChange={handleChange}>
-                      <MenuItem value='A+'>A+</MenuItem>
-                      <MenuItem value='A'>A</MenuItem>
-                      <MenuItem value='B+'>B+</MenuItem>
-                      <MenuItem value='B'>B</MenuItem>
-                      <MenuItem value='C+'>C+</MenuItem>
-                      <MenuItem value='C'>C</MenuItem>
-                      <MenuItem value='D+'>D</MenuItem>
-                      <MenuItem value='D'>D</MenuItem>
-                      <MenuItem value='F'>F</MenuItem>
-                      <MenuItem value='Hidden'>Hidden</MenuItem>
+                      onChange={(event) => {
+                        setGrade(event.target.value);
+                      }}>
+                      <MenuItem value={4}>A+</MenuItem>
+                      <MenuItem value={3.7}>A</MenuItem>
+                      <MenuItem value={3.3}>B+</MenuItem>
+                      <MenuItem value={3}>B</MenuItem>
+                      <MenuItem value={2.3}>C+</MenuItem>
+                      <MenuItem value={2}>C</MenuItem>
+                      <MenuItem value={1.3}>D</MenuItem>
+                      <MenuItem value={1}>D</MenuItem>
+                      <MenuItem value={0}>F</MenuItem>
                     </Select>
                   </FormControl>
                 </Box>
@@ -357,9 +412,9 @@ export default function survey() {
                       <RadioGroup
                         row
                         aria-labelledby='segmented-controls-example'
-                        name='name'
-                        value={name}
-                        onChange={(event) => setName(event.target.value)}
+                        name='hide'
+                        value={hide ? hide : null}
+                        onChange={(event) => setHide(event.target.value)}
                         sx={{
                           marginTop: 3,
                           fontSize: 16,

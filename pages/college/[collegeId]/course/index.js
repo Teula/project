@@ -8,6 +8,8 @@ import getCourses from "../../../../lib/backend/getCourses";
 import DrawerAdmain from "../../../../components/mui/DrawerAdmain";
 import { useRouter } from "next/router";
 import Fuse from "fuse.js";
+import styles from "../../../../styles/College.module.css";
+import TextField from "@mui/material/TextField";
 
 export async function getStaticProps(context) {
   console.log("name", context.params.collegeId);
@@ -16,7 +18,7 @@ export async function getStaticProps(context) {
     `http://localhost:3000/api/college/${collegeId}/courses`
   );
   const data = await response.json();
-  console.log(data);
+  console.log("67", data);
   return {
     props: {
       courses: data.courses.map((course) => {
@@ -151,23 +153,33 @@ export default function index(props) {
           <li key={result}>{result}</li>
         ))}
       </ol> */}
-      <input
+      {/* <input
         type='text'
         onChange={(event) => {
           setSearch(event.target.value);
         }}
-      />
+      /> */}
 
-      <Container maxWidth='lg'>
+      <Container maxWidth='lg' sx={{ marginTop: 10 }}>
         <Grid container spacing={2}>
-          <Grid item xs={12}>
+          <Grid item xs={12} sx={{ fontSize: 16 }}>
             <h1>All Course</h1>
           </Grid>
-          <Grid item xs={8}>
+          {/* <Grid item xs={8}>
             <Filter get={getFilter} courses={courses} />
-          </Grid>
+          </Grid> */}
           <Grid item xs={12}>
-            <SearchBar get={getSearch} />
+            <TextField
+              id='standard-basic'
+              label='Search For...'
+              variant='standard'
+              size='large'
+              sx={{ width: "95%" }}
+              type='text'
+              onChange={(event) => {
+                setSearch(event.target.value);
+              }}
+            />
           </Grid>
           {course}
           {/* {body} */}

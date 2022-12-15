@@ -10,6 +10,7 @@ import { FitnessCenterOutlined } from "@material-ui/icons";
 import Infooo from "../../../../../components/Infooo";
 import NavBar from "../../../../../components/NavBar";
 import { useRef } from "react";
+import axios from "axios";
 
 // export async function getStaticProps(context) {
 //   // const {params} = context
@@ -29,20 +30,48 @@ export async function getServerSideProps(context) {
   const response = await fetch(
     `http://localhost:3000/api/course/${context.params.course}/comment`
   );
+  const res = await axios.get(
+    `http://localhost:3000/api/course/${context.params.course}/comment`
+  );
+  console.log("res", res.data.comments[0].user[0].email);
   //
   const data = await response.json();
   // const alldata = JSON.stringify(data);
   const alldata = JSON.parse(JSON.stringify(data.comments));
+
   // console.log(alldata);
   return {
     props: {
       alldata,
+      test1: res.data.comments,
+      // user: res.data.comments.map((u) => {
+      //   return {
+      //     id: u.user._id,
+      //   };
+      // }),
+      // comment: res.data.map((u) => {
+      //   console.log("u", u._id);
+      // }),
       // comments: alldata.map((c) => {
       //   // console.log(comment);
       //   return { text: c.comment, id: c._id };
       // }),
     },
   };
+  // return {
+  //   props: {
+  //     user: data.user.map((u) => {
+  //       return {
+  //         u,
+  //       };
+  //     }),
+  //     comment: data.comment.map((c) => {
+  //       return {
+  //         c,
+  //       };
+  //     }),
+  //   },
+  // };
 }
 
 export default function id(props) {
@@ -58,6 +87,7 @@ export default function id(props) {
       },
     });
   };
+
   // useEffect(() => {
   //   const comments = alldata.map((c) => {
   //     return (
@@ -78,10 +108,14 @@ export default function id(props) {
   // }, [status == "authenticated"]);
 
   // change tabs
-  const { alldata } = props;
+  const { alldata, test1 } = props;
+
+  console.log("res11", test1[0].user);
+
   const [like, setLike] = useState();
   const [dislike, setDislike] = useState();
   const [commentId, setCommentId] = useState();
+  // console.log(alldata.comments, "alldata");
   useEffect(() => {
     if (isMounted.current) {
       handleRating();
@@ -141,7 +175,7 @@ export default function id(props) {
       setIsShown(true);
     }
   };
-  console.log("user here", alldata);
+
   // const comments = alldata.map((c) => {
   //   return (
   //     <Comment
@@ -224,7 +258,12 @@ export default function id(props) {
                   likes={c.likes}
                   dislikes={c.dislikes}
                   getlike={getlike}
+                  user={c.user}
+                  created={c.createdAt}
+                  updated={c.updatedAt}
                   getdislike={getdislike}
+                  grade={c.grade}
+                  again={c.again}
                   currentUser={session.user._id || null}
                 />
               );

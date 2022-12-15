@@ -3,11 +3,14 @@
 import dbConnect from "../../../../utils/dbConnect";
 import { Comment } from "../../../../models/Comment";
 import { ratingClasses } from "@mui/material";
+import { User } from "../../../../models/User";
 
 export default async function handler(req, res) {
   const { method, body, query } = req;
   dbConnect();
-  switch (method) {
+  switch (
+    method // get like dislike
+  ) {
     case "GET":
       const comment = await Comment.findById(query.comment);
       res.status(200).json({ comment });

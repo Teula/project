@@ -24,6 +24,9 @@ const userSchema = new mongoose.Schema(
     campus: {
       type: String,
     },
+    gpa: {
+      type: Number,
+    },
     isAdmin: {
       type: Boolean,
       required: true,
