@@ -11,7 +11,7 @@ const connectDB = () => {
   console.log("connected");
 };
 
-export default function notes(req, res) {
+export default async function notes(req, res) {
   connectDB();
   const { method } = req;
 

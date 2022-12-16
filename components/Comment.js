@@ -277,7 +277,7 @@ export default function Comment(props) {
   const notify = () =>
     toast.warn(
       <h1>
-        <a href='/login'>log in</a> to like / dislike
+        <Link href='/login'>Log in</Link> like - dislike
       </h1>,
       {
         position: "top-center",

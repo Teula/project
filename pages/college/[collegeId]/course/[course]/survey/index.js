@@ -45,7 +45,7 @@ export async function getServerSideProps(context) {
   };
 }
 
-export default function Survey(props) {
+export default function SurveyPage(props) {
   const notify = () =>
     toast.warn(
       <h1>

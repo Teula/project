@@ -93,9 +93,9 @@ export default function Id(props) {
   console.log("this", props.instructors.instructors);
   const notify = () =>
     toast.warn(
-      <hi>
-        <a href='/login'>log in</a> to rate
-      </hi>,
+      <h1>
+        <Link href='/login'>Log in</Link> to rate
+      </h1>,
       {
         position: "top-center",
         autoClose: 5000,

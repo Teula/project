@@ -155,7 +155,11 @@ export default function ChartTab(props) {
             onChange={handleChange}>
             <MenuItem value='all'>All</MenuItem>
             {props.instructors.map((i) => {
-              return <MenuItem value={i._id}>{i.name}</MenuItem>;
+              return (
+                <MenuItem key={i._id} value={i._id}>
+                  {i.name}
+                </MenuItem>
+              );
             })}
           </Select>
         </FormControl>

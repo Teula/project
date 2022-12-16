@@ -20,7 +20,9 @@ export default function SelectCollege(props) {
         label='College'
         onChange={handleChange}>
         {props.colleges.map((c) => (
-          <MenuItem value={c.id}>{c.name}</MenuItem>
+          <MenuItem key={c.id} value={c.id}>
+            {c.name}
+          </MenuItem>
         ))}
       </Select>
     </FormControl>

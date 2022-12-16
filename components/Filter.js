@@ -16,7 +16,9 @@ export default function Filter(props) {
     props.get(event.target.value);
   };
   const majors = props.courses.map((c) => (
-    <MenuItem value={c.majors.tag}>{c.majors.tag}</MenuItem>
+    <MenuItem key={c.majors.tag} value={c.majors.tag}>
+      {c.majors.tag}
+    </MenuItem>
   ));
   const handleFilter = () => {};
 

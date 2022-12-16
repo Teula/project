@@ -10,7 +10,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <div>
       <SessionProvider session={session}>
-        <Head>
+        {/* <Head>
           <>
             <link rel='preconnect' href='https://fonts.googleapis.com' />
             <link
@@ -27,7 +27,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
               rel='stylesheet'
             />
           </>
-        </Head>
+        </Head> */}
         <NavBar />
         <Component {...pageProps} />
       </SessionProvider>

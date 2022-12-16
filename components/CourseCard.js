@@ -128,10 +128,11 @@ export default function CourseCard(props) {
           <Typography variant='body2' color='text.secondary'>
             <Grid container spacing={2}>
               {course.majors.map((m) => (
-                <Grid item xs={3}>
-                  <Tooltip title={m.name}>
+                <Grid item xs={3} key={m.tag}>
+                  <Tooltip key={m.tag} title={m.name}>
                     <Chip
                       label={m.tag}
+                      key={m.tag}
                       color='info'
                       size='small'
                       icon={<SchoolIcon />}
@@ -143,38 +144,23 @@ export default function CourseCard(props) {
             </Grid>
           </Typography>
         </CardContent>
-
         {/* <CardActions>
           <Button size='small'>Share</Button>
           <Button size='small'>Learn More</Button>
         </CardActions> */}
-        {course.prerequisites[0] && (
-          <CardActions disableSpacing sx={{ fontSize: 15 }}>
-            {/* <IconButton aria-label='add to favorites'> */}
-            {/* <FavoriteIcon /> */}
-            Prerequisites
-            {/* </IconButton> */}
-            <IconButton aria-label='share'>{/* <ShareIcon /> */}</IconButton>
-            <ExpandMore
-              expand={expanded}
-              onClick={handleExpandClick}
-              aria-expanded={expanded}
-              aria-label='show more'>
-              <ExpandMoreIcon />
-            </ExpandMore>
-          </CardActions>
-        )}
+        /////////////////////////////////////////
         <Collapse in={expanded} timeout='auto' unmountOnExit>
           <CardContent>
             <Typography>
               {course.prerequisites.map((p) => (
-                <Grid container spacing={0.5}>
-                  <Grid item xs={8}>
+                <Grid key={props.course.id} container spacing={0.5}>
+                  <Grid key={props.course.id} item xs={8}>
                     {p.name}
                   </Grid>
-                  <Grid item xs={2}>
+                  <Grid key={props.course.id} item xs={2}>
                     <Chip
-                      label={p.code}
+                      key={props.course.id}
+                      label={props.course.id}
                       variant='outlined'
                       color='secondary'
                       size='small'
@@ -185,7 +171,6 @@ export default function CourseCard(props) {
             </Typography>
           </CardContent>
         </Collapse>
-
         {/* <Accordion style={{ width: 400 }}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -208,8 +193,8 @@ export default function CourseCard(props) {
             sx={{ fontSize: 18 }}
           />
 
-          <div className={styles.numberOfChat}>1</div>
-          <div className={styles.numberOfChat}>/5</div>
+          <p className={styles.numberOfChat}>1</p>
+          <p className={styles.numberOfChat}>/5</p>
         </div>
 
         <div className={styles.chatCount}>
@@ -220,7 +205,7 @@ export default function CourseCard(props) {
               fontSize: 18,
             }}
           />
-          <div className={styles.numberOfChat}>1</div>
+          <p className={styles.numberOfChat}>1</p>
         </div>
         {session && session.user.isAdmin == true && (
           <DeleteForeverOutlinedIcon

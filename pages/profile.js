@@ -11,7 +11,7 @@ import styles from "../styles/Survey.module.css";
 import Radio, { radioClasses } from "@mui/joy/Radio";
 import RadioGroup from "@mui/joy/RadioGroup";
 
-export default function profile() {
+export default function Profile() {
   const { data: session, status } = useSession();
   const handleUpdate = async () => {
     const data = await fetch(

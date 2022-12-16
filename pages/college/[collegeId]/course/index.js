@@ -113,10 +113,11 @@ export default function Index(props) {
   }
 
   const course = renderC.map((c) => (
-    <Grid item xs={4}>
+    <Grid item xs={4} key={c.id}>
       <CourseCard handleDelete={handleDelete} course={c} key={c.id} />
     </Grid>
   ));
+  console.log("id", renderC[0].id);
 
   // const [body, setBody] = useState(() => {
   //   let course = courses.map((c) => (
