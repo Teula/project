@@ -11,6 +11,16 @@ import Infooo from "../../../../../components/Infooo";
 import NavBar from "../../../../../components/NavBar";
 import { useRef } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Fuse from "fuse.js";
+
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import { AgainChart } from "../../../../../components/AgainChart";
 
 // export async function getStaticProps(context) {
 //   // const {params} = context
@@ -33,8 +43,12 @@ export async function getServerSideProps(context) {
   const res = await axios.get(
     `http://localhost:3000/api/course/${context.params.course}/comment`
   );
-  console.log("res", res.data.comments[0].user[0].email);
+  // console.log("res", res.data.comments[0].user[0].email);
   //
+  const response1 = await fetch(
+    `http://localhost:3000/api/college/${context.params.collegeId}/instructors`
+  );
+  const instructors = await response1.json();
   const data = await response.json();
   // const alldata = JSON.stringify(data);
   const alldata = JSON.parse(JSON.stringify(data.comments));
@@ -44,6 +58,7 @@ export async function getServerSideProps(context) {
     props: {
       alldata,
       test1: res.data.comments,
+      instructors,
       // user: res.data.comments.map((u) => {
       //   return {
       //     id: u.user._id,
@@ -75,6 +90,23 @@ export async function getServerSideProps(context) {
 }
 
 export default function id(props) {
+  console.log("this", props.instructors.instructors);
+  const notify = () =>
+    toast.warn(
+      <hi>
+        <a href='/login'>log in</a> to rate
+      </hi>,
+      {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      }
+    );
   const { data: session, status } = useSession();
   const isMounted = useRef(false);
   const handleRating = async () => {
@@ -109,8 +141,8 @@ export default function id(props) {
 
   // change tabs
   const { alldata, test1 } = props;
-
-  console.log("res11", test1[0].user);
+  const router = useRouter();
+  // console.log("res11", test1[0].user);
 
   const [like, setLike] = useState();
   const [dislike, setDislike] = useState();
@@ -147,11 +179,16 @@ export default function id(props) {
   const handleTab = (event) => {
     switch (event.target.value) {
       case "0":
-        setTab(<ChartTab />);
+        setTab(
+          <ChartTab
+            data={alldata}
+            instructors={props.instructors.instructors}
+          />
+        );
 
         break;
       case "1":
-        setTab(<h1>tab2</h1>);
+        setTab(<AgainChart />);
         break;
       case "2":
         setTab(<h1>tab3</h1>);
@@ -191,9 +228,38 @@ export default function id(props) {
   //   );
   // });
 
+  // const options = {
+  //   includeScore: true,
+  //   // Search in `author` and in `tags` array
+  //   keys: ["major", "name"],
+  // };
+  //   const [search, setSearch] = useState("");
+  // const fuse = new Fuse(alldata, options);
+  // const searchResult = fuse.search(search).map((result) => result.item);
+  // console.log(
+  //   "sort",
+  const [filter, setFilter] = React.useState("");
+  const handleFilter = (e) => {
+    setFilter(e.target.value);
+    if (e.target.value == "popular") {
+      alldata.sort((a, b) => {
+        return b.likes.length - a.likes.length;
+      });
+    }
+    if (e.target.value == "new") {
+      alldata.sort((a, b) => {
+        let da = new Date(a.createdAt),
+          db = new Date(b.createdAt);
+        console.log(db.getTime());
+        return db.getTime() - da.getTime();
+      });
+    }
+  };
+
+  console.log("aalld", alldata);
   return (
     <div>
-      {status == "authenticated" && (
+      {(status == "authenticated" || status == "unauthenticated") && (
         <div>
           {/* <NavBar /> */}
           <section className={styles.Header}>
@@ -220,6 +286,33 @@ export default function id(props) {
         </div>
       )} */}
             <Infooo />
+            {session && (
+              <div className={styles.rateMe}>
+                <Link
+                  href={`/college/${router.query.collegeId}/course/${router.query.course}/survey`}>
+                  Rate Me 1
+                </Link>
+              </div>
+            )}
+            {!session && (
+              <div className={styles.rateMe} onClick={notify}>
+                <a href='#'>Rate Me 2</a>
+              </div>
+            )}
+
+            <ToastContainer
+              position='top-center'
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme='light'
+            />
+
             <section>
               <div className={styles.ChartGrid}>
                 <button
@@ -249,6 +342,21 @@ export default function id(props) {
                 <div className={styles.TabBox}>{tab}</div>
               </div>
             </section>
+            <Box sx={{ minWidth: 120 }}>
+              <FormControl fullWidth>
+                <InputLabel id='demo-simple-select-label'>Sort</InputLabel>
+                <Select
+                  labelId='demo-simple-select-label'
+                  id='demo-simple-select'
+                  value={filter}
+                  defaultValue=''
+                  label='Sort'
+                  onChange={handleFilter}>
+                  <MenuItem value='popular'>Popular</MenuItem>
+                  <MenuItem value='new'>New</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
             {alldata.map((c) => {
               return (
                 <Comment
@@ -264,7 +372,7 @@ export default function id(props) {
                   getdislike={getdislike}
                   grade={c.grade}
                   again={c.again}
-                  currentUser={session.user._id || null}
+                  currentUser={session ? session.user._id : null}
                 />
               );
             })}

@@ -95,6 +95,8 @@ import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import PrintIcon from "@mui/icons-material/Print";
 import ShareIcon from "@mui/icons-material/Share";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   "&.MuiSpeedDial-directionDown, &.MuiSpeedDial-directionRight": {
@@ -272,31 +274,50 @@ export default function Comment(props) {
   //   }
   //   console.log("hello");
   // }, []);
-
+  const notify = () =>
+    toast.warn(
+      <h1>
+        <a href='/login'>log in</a> to like / dislike
+      </h1>,
+      {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      }
+    );
   const handleLike = (event) => {
-    if (event.target.value === "like") {
-      if (disableDislike == true) {
-        setDislikes(dislikes - 1);
-      }
-      setDisablelike(true);
-      setDisabledislike(false);
-      setLikes(likes + 1);
-      setUserDislike(0);
-      setUserlike(1);
-      props.getlike(props.id);
+    if (!session) {
+      notify();
+    } else {
+      if (event.target.value === "like") {
+        if (disableDislike == true) {
+          setDislikes(dislikes - 1);
+        }
+        setDisablelike(true);
+        setDisabledislike(false);
+        setLikes(likes + 1);
+        setUserDislike(0);
+        setUserlike(1);
+        props.getlike(props.id);
 
-      // handleRating();
-    }
-    if (event.target.value === "dislike") {
-      if (disablelike == true) {
-        setLikes(likes - 1);
+        // handleRating();
       }
-      setDisablelike(false);
-      setDisabledislike(true);
-      setDislikes(dislikes + 1);
-      setUserlike(0);
-      setUserDislike(1);
-      props.getdislike(props.id);
+      if (event.target.value === "dislike") {
+        if (disablelike == true) {
+          setLikes(likes - 1);
+        }
+        setDisablelike(false);
+        setDisabledislike(true);
+        setDislikes(dislikes + 1);
+        setUserlike(0);
+        setUserDislike(1);
+        props.getdislike(props.id);
+      }
     }
   };
   const [open, setOpen] = React.useState(false);
@@ -314,8 +335,9 @@ export default function Comment(props) {
 
   return (
     <div>
+      <ToastContainer />
       {/* {userData} */}
-      <h1>
+      {/* <h1>
         // if not hidden //
         {props.user[0].name}
         // tags
@@ -325,19 +347,21 @@ export default function Comment(props) {
         {props.created}
         //
         {props.again}
-        {props.grade} // if to convert
+        {props.grade}
+        // if to convert
         {props.user[0].gpa}
-        {props.user[0].isAdmin} // if statment
+        {props.user[0].isAdmin}
+        // if statment
         {props.user[0].major}
         {props.user[0].campus}
-      </h1>
+      </h1> */}
 
       <div className={styles.commentsSpace}>
         <div className={styles.commentCard}>
-          <div className={styles.firstColumn}>
-            {/* <div className={styles.logoComment}>
+          {/* <div className={styles.firstColumn}>
+            <div className={styles.logoComment}>
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHpP7PYm0K-7e3kXOK8U6F3pgSpDMkfWtU4g&usqp=CAU"></img>
-              </div> */}
+              </div>
             <div className={styles.qu}>
               <div className={styles.quality}>QUALITY</div>
               <div className={styles.commentRate}>40</div>
@@ -346,60 +370,85 @@ export default function Comment(props) {
               <div className={styles.difficulty}>DIFFICULTY</div>
               <div className={styles.commentRate}>40</div>
             </div>
-          </div>
+          </div> */}
           <div className={styles.secondColumn}>
             <div className={styles.firstRowComment}>
               <div className={styles.infoComment}>
-                <div className={styles.infoCom}>Grade</div>
-                <div className={styles.infoCom}>online</div>
-                <div className={styles.infoCom}>online</div>
-                <div className={styles.infoCom}>online</div>
-                <div className={styles.infoCom}>online</div>
+                <div className={styles.infoCom1}>
+                  Ayman Alsahfy{props.user[0].name}
+                </div>
+                <div className={styles.infoCom}>{props.user[0].year}</div>
+
+                <div className={styles.infoCom}>{props.user[0].major}</div>
+                <div className={styles.infoCom}>{props.user[0].campus}</div>
+
+                {/* <div className={styles.infoCom}></div>
+                <div className={styles.infoCom}></div> */}
+                <div className={styles.infoCom}>No{props.user[0].isAdmin}</div>
               </div>
-              {/* <div className={styles.commentDate}>
-                  12-12-2022
-                </div> */}
+              <div className={styles.commentDate}>
+                <div>Updated: 12-11-2222{props.updated}</div>
+                <div>Created: 12-11-1111{props.created}</div>
+              </div>
             </div>
             <div className={styles.commentTags}>
               <div className={styles.tags}>
                 <Tooltip title=''>
                   <Chip
-                    label=''
+                    label='SE'
                     color='info'
                     size='small'
                     icon={<SchoolIcon />}
+                    sx={{ fontSize: 10 }}
                   />
                 </Tooltip>
               </div>
               <div className={styles.tags}>
                 <Tooltip title=''>
                   <Chip
-                    label=''
+                    label='CS'
                     color='info'
                     size='small'
                     icon={<SchoolIcon />}
+                    sx={{ fontSize: 10 }}
                   />
                 </Tooltip>
               </div>
               <div className={styles.tags}>
                 <Tooltip title=''>
                   <Chip
-                    label=''
+                    label='IT'
                     color='info'
                     size='small'
                     icon={<SchoolIcon />}
+                    sx={{ fontSize: 10 }}
                   />
                 </Tooltip>
               </div>
               <div className={styles.tags}>
                 <Tooltip title=''>
                   <Chip
-                    label=''
+                    label='CE'
                     color='info'
                     size='small'
                     icon={<SchoolIcon />}
+                    sx={{ fontSize: 10 }}
                   />
                 </Tooltip>
+              </div>
+            </div>
+            <div className={styles.infoComment1}>
+              <div className={styles.infoCom3}>
+                <div className={styles.status}>GPA</div>
+                {props.user[0].gpa}
+              </div>
+              <div className={styles.infoCom3}>
+                <div className={styles.status}>Grade</div>A+
+                {props.grade}
+              </div>
+              <div className={styles.infoCom3}>
+                <div className={styles.status}>Take again</div>Yes
+                {props.again}
               </div>
             </div>
             <div className={styles.commentBox}> {props.text}</div>

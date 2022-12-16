@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import styles from "../styles/College.module.css";
 import { MenuItem, FormControl, InputLabel, Select } from "@mui/material";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Infooo(props) {
+  const router = useRouter();
   return (
     <div>
       <section className={styles.Info}>
@@ -52,11 +55,15 @@ export default function Infooo(props) {
               </li>
             </ul>
           </div>
-        </div>
-        <div className={styles.rateMe}>
-          <a href='#' className={styles.rateMee}>
+          {/* <a href='#' className={styles.rateMee}>
             Rate Me
-          </a>
+          </a> */}
+          {/* <div className={styles.rateMe}>
+            <Link
+              href={`/college/${router.collegeId}/course/${router.course}/survey`}>
+              Rate Me 1
+            </Link>
+          </div> */}
         </div>
       </section>
     </div>

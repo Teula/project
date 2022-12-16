@@ -26,6 +26,8 @@ import Sheet from "@mui/joy/Sheet";
 import Done from "@mui/icons-material/Done";
 import Typography from "@mui/joy/Typography";
 import CropSquareIcon from "@mui/icons-material/CropSquare";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export async function getServerSideProps(context) {
   const response = await fetch(
@@ -44,6 +46,22 @@ export async function getServerSideProps(context) {
 }
 
 export default function survey(props) {
+  const notify = () =>
+    toast.warn(
+      <h1>
+        <a href='/login'>log in</a> to rate
+      </h1>,
+      {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      }
+    );
   const { data: session, status } = useSession();
   const router = useRouter();
 
@@ -121,6 +139,7 @@ export default function survey(props) {
     setComment(event.target.value);
   };
   const [rateOne, setRateOne] = useState(); // late update
+
   const getV = (event) => {
     setRateOne(event.target.value);
     console.log("tste", rateOne);
@@ -149,6 +168,10 @@ export default function survey(props) {
         },
       }
     );
+    router.push(
+      `http://localhost:3000/college/${router.query.collegeId}/course/${router.query.course}`
+    );
+    notify();
   };
 
   const [again, setAgain] = React.useState("flex-start");
@@ -185,6 +208,18 @@ export default function survey(props) {
   console.log("c", getCourse);
   return (
     <div>
+      <ToastContainer
+        position='top-center'
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme='light'
+      />
       {/* <Survey /> */}
       {session && (
         <div>

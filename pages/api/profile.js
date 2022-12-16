@@ -8,6 +8,9 @@ export default async function handler(req, res) {
   if (method == "PUT") {
     let user = await User.findByIdAndUpdate(body.session.user._id, {
       year: body.year,
+      gpa: 3,
+      campus: "male",
+      major: "SE",
     });
     await user.save();
   }

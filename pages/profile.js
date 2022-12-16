@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 
 import Box from "@mui/material/Box";
@@ -27,12 +27,15 @@ export default function profile() {
     );
   };
   //
+  const [uname, setUname] = useState();
+  const [major, setMajor] = useState();
+  const [gpa, setGpa] = useState();
+  const [campus, setCampus] = useState();
   const [year, setYear] = React.useState("");
 
   const handleChange = (event) => {
     setYear(event.target.value);
   };
-  const [major, setMajor] = React.useState("");
 
   const handleMajor = (event) => {
     setMajor(event.target.value);
@@ -43,7 +46,7 @@ export default function profile() {
     return (
       <div>
         <div className={styles.profileGrid}>
-          <div className={styles.profileTitle}>Profile Settings</div>
+          <div className={styles.profileTitle}>[icon]Profile Settings</div>
           <div className={styles.profileRows}>
             <TextField
               id='filled-basic'
