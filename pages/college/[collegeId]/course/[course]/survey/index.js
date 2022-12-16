@@ -28,6 +28,7 @@ import Typography from "@mui/joy/Typography";
 import CropSquareIcon from "@mui/icons-material/CropSquare";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Link from "next/link";
 
 export async function getServerSideProps(context) {
   const response = await fetch(
