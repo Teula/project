@@ -7,7 +7,6 @@ import Comment from "../../../../../components/Comment";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { FitnessCenterOutlined } from "@material-ui/icons";
-import { Infooo } from "../../../../../components/Infooo";
 import NavBar from "../../../../../components/NavBar";
 import { useRef } from "react";
 import axios from "axios";
@@ -21,6 +20,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { AgainChart } from "../../../../../components/AgainChart";
+// import Infooo from "../../../../../components/Infooo";
 
 // export async function getStaticProps(context) {
 //   // const {params} = context
@@ -285,7 +285,8 @@ export default function Id(props) {
           I'll appear when you hover over the button.
         </div>
       )} */}
-            <Infooo />
+            {/* <Infooo /> */}
+
             {session && (
               <div className={styles.rateMe}>
                 <Link
