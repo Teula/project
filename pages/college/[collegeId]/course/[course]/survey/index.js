@@ -49,7 +49,7 @@ export default function SurveyPage(props) {
   const notify = () =>
     toast.warn(
       <h1>
-        <a href='/login'>log in</a> to rate
+        <Link href='/login'>Log in</Link> to rate
       </h1>,
       {
         position: "top-center",

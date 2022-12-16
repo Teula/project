@@ -111,12 +111,12 @@ export default function Index(props) {
     renderC = searchResult;
   }
 
-  const course = renderC.map((c) => (
-    <Grid item xs={4}>
-      <CourseCard handleDelete={handleDelete} course={c} key={c.id} />
-    </Grid>
-  ));
-  const [instructor, setInstructor] = useState();
+  // const course = renderC.map((c) => (
+  //   <Grid item xs={4}>
+  //     <CourseCard handleDelete={handleDelete} course={c} key={c.id} />
+  //   </Grid>
+  // ));
+  // const [instructor, setInstructor] = useState();
 
   // const [body, setBody] = useState(() => {
   //   let course = courses.map((c) => (
@@ -171,7 +171,7 @@ export default function Index(props) {
           <Grid item xs={12}>
             <SearchBar get={getSearch} />
           </Grid>
-          {course}
+          {/* {course} */}
           {/* {body} */}
         </Grid>
       </Container>

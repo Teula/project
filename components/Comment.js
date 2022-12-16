@@ -97,6 +97,7 @@ import PrintIcon from "@mui/icons-material/Print";
 import ShareIcon from "@mui/icons-material/Share";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Link from "next/link";
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   "&.MuiSpeedDial-directionDown, &.MuiSpeedDial-directionRight": {

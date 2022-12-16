@@ -148,7 +148,7 @@ export default function CourseCard(props) {
           <Button size='small'>Share</Button>
           <Button size='small'>Learn More</Button>
         </CardActions> */}
-        /////////////////////////////////////////
+        {/* ///////////////////////////////////////// */}
         <Collapse in={expanded} timeout='auto' unmountOnExit>
           <CardContent>
             <Typography>
