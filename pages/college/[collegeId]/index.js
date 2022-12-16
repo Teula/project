@@ -16,7 +16,7 @@ import { useRouter } from "next/router";
 //     fallback: "blocking", //indicates the type of fallback
 //   };
 // }
-export default function index() {
+export default function Index() {
   const router = useRouter();
   return (
     <div>

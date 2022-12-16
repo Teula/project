@@ -1,7 +1,7 @@
 import React from "react";
 import { useSession } from "next-auth/react";
 
-export default function index() {
+export default function Index() {
   const { data: session, status } = useSession();
   console.log("admin", session);
   if (session && session.user.isAdmin == true) {

@@ -14,7 +14,7 @@ export async function getStaticProps() {
   };
 }
 
-export default function index(props) {
+export default function Index(props) {
   const { colleges } = props;
   const college = colleges.map((c) => (
     <Link href={`college/${c.id}`}>

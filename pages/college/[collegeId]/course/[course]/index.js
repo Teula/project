@@ -89,7 +89,7 @@ export async function getServerSideProps(context) {
   // };
 }
 
-export default function id(props) {
+export default function Id(props) {
   console.log("this", props.instructors.instructors);
   const notify = () =>
     toast.warn(

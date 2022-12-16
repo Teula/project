@@ -45,7 +45,7 @@ export async function getStaticPaths() {
   };
 }
 
-export default function index(props) {
+export default function Index(props) {
   const router = useRouter();
 
   const handleInstructorSubmit = async () => {
