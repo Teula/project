@@ -7,7 +7,7 @@ import Comment from "../../../../../components/Comment";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { FitnessCenterOutlined } from "@material-ui/icons";
-import Infooo from "../../../../../components/Infooo";
+import { Infooo } from "../../../../../components/Infooo";
 import NavBar from "../../../../../components/NavBar";
 import { useRef } from "react";
 import axios from "axios";
