@@ -29,7 +29,7 @@ import CropSquareIcon from "@mui/icons-material/CropSquare";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
-
+import FormHelperText from "@mui/material/FormHelperText";
 export async function getServerSideProps(context) {
   const response = await fetch(
     `http://localhost:3000/api/college/${context.params.collegeId}/courses`
@@ -172,7 +172,7 @@ export default function SurveyPage(props) {
     router.push(
       `http://localhost:3000/college/${router.query.collegeId}/course/${router.query.course}`
     );
-    notify();
+    // notify();
   };
 
   const [again, setAgain] = React.useState("flex-start");
@@ -180,10 +180,24 @@ export default function SurveyPage(props) {
   const fillcourses = props.courses.courses.map((c) => {
     return (
       <MenuItem value={c._id} key={c._id}>
-        {c.code}/{c.name}
+        {c.code} / {c.name}
       </MenuItem>
     );
   });
+  let defultC;
+  for (let index = 0; index < props.courses.courses.length; index++) {
+    if (props.courses.courses[index]._id == router.query.course) {
+      defultC = true;
+      break;
+    } else {
+      defultC = false;
+    }
+  }
+  // const defultC = props.courses.courses.map((c) => {
+  //   if (c._id == router.query.course) {
+  //   } else return false;
+  // });
+  console.log("check", defultC);
   const fillInstructors = props.instructors.instructors.map((i) => {
     return (
       <MenuItem key={i._id} value={i._id}>
@@ -233,13 +247,14 @@ export default function SurveyPage(props) {
                   <InputLabel
                     id='demo-simple-select-label'
                     sx={{ fontSize: 17 }}>
-                    Course Name / Code
+                    Code / Course name
                   </InputLabel>
                   <Select
                     labelId='demo-simple-select-label'
                     id='demo-simple-select'
                     value={props.courses.courses._id}
-                    defaultValue=''
+                    disabled
+                    defaultValue={defultC ? router.query.course : ""}
                     label='Course'
                     onChange={(event) => {
                       setGetCourse(event.target.value);
@@ -501,7 +516,7 @@ export default function SurveyPage(props) {
                 </label>
                 <Textarea
                   onChange={handleComment}
-                  minRows={10}
+                  minRows={7}
                   placeholder='Write your commment'
                   // style='width: 80%;'
                   sx={{ width: "100%" }}

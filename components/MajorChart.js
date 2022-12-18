@@ -71,28 +71,6 @@ export function AgainChart(props) {
   return (
     <div>
       <Pie data={data} />
-      <Box>
-        <FormControl sx={{ width: "100%", marginTop: 5 }}>
-          <InputLabel id='demo-simple-select-label'>
-            Choose Instructor
-          </InputLabel>
-          <Select
-            labelId='demo-simple-select-label'
-            id='demo-simple-select'
-            value={filter}
-            label='Filter'
-            onChange={handleChange}>
-            <MenuItem value='all'>All</MenuItem>
-            {props.instructors.map((i) => {
-              return (
-                <MenuItem key={i._id} value={i._id}>
-                  {i.name}
-                </MenuItem>
-              );
-            })}
-          </Select>
-        </FormControl>
-      </Box>
     </div>
   );
 }

@@ -10,6 +10,10 @@ import { useRouter } from "next/router";
 import Fuse from "fuse.js";
 import styles from "../../../../styles/College.module.css";
 import TextField from "@mui/material/TextField";
+import Link from "next/link";
+import Router from "next/router";
+
+import { useSession } from "next-auth/react";
 
 export async function getStaticProps(context) {
   console.log("name", context.params.collegeId);
@@ -28,6 +32,7 @@ export async function getStaticProps(context) {
           code: course.code,
           prerequisites: course.prerequisites,
           majors: course.majors,
+          comments: course.comments,
         };
       }),
       majors: data.majors.map((major) => {
@@ -62,6 +67,7 @@ export default function Index(props) {
         },
       }
     );
+    router.reload();
   };
   const handleDelete = async (_id) => {
     console.log("post", _id);
@@ -75,6 +81,7 @@ export default function Index(props) {
         },
       }
     );
+    router.reload();
   };
 
   const [filtered, setFiltered] = useState();
@@ -114,10 +121,16 @@ export default function Index(props) {
 
   const course = renderC.map((c) => (
     <Grid item xs={4} key={c.id}>
-      <CourseCard handleDelete={handleDelete} course={c} key={c.id} />
+      <Link
+        href={`http://localhost:3000/college/${router.query.collegeId}/course/${c.id}`}>
+        <a>
+          <CourseCard handleDelete={handleDelete} course={c} key={c.id} />
+        </a>
+      </Link>
     </Grid>
   ));
-  console.log("id", renderC[0].id);
+  const { data: session, status } = useSession();
+  // console.log("id", renderC[0].id);
 
   // const [body, setBody] = useState(() => {
   //   let course = courses.map((c) => (
@@ -144,11 +157,71 @@ export default function Index(props) {
 
   // console.log(courses);
   // const filterdCourses = courses.map((f) => {});
+  let admin = "";
+  let loadpage = false;
+  if (status == "authenticated" || status == "unauthenticated") {
+    loadpage = true;
+    if (session) {
+      if (session.user.isAdmin) {
+        admin = (
+          <DrawerAdmain
+            majors={majors}
+            courses={courses}
+            handleSubmit={handleSubmit}
+          />
+        );
+      }
+    }
+  }
 
   return (
     // fix container
 
     <div>
+      {loadpage && (
+        <div>
+          <Container maxWidth='lg' sx={{ marginTop: 10 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sx={{ fontSize: 16 }}>
+                <h1>All Course</h1>
+              </Grid>
+              {/* <Grid item xs={8}>
+            <Filter get={getFilter} courses={courses} />
+          </Grid> */}
+              <Grid item xs={12}>
+                <TextField
+                  id='standard-basic'
+                  label='Search For...'
+                  variant='standard'
+                  size='large'
+                  sx={{ width: "100%" }}
+                  type='text'
+                  onChange={(event) => {
+                    setSearch(event.target.value);
+                  }}
+                />
+              </Grid>
+              {course}
+              {/* {body} */}
+            </Grid>
+          </Container>
+          {/* <Container maxWidth='sm'>
+        <h1>Admin Control</h1>
+        <AddCourse courses={courses} />
+      </Container> */}
+          {admin}
+
+          {/* <ul>
+        <h1>idaes</h1>
+        <li>core tag</li>
+        <li>move search bar and improve</li>
+        <li>Scdule</li>
+        <li>survy info</li>
+        <li>better filter ui</li>
+        
+      </ul> */}
+        </div>
+      )}
       {/* <ol>
         {searchResult.map((result) => (
           <li key={result}>{result}</li>
@@ -160,51 +233,6 @@ export default function Index(props) {
           setSearch(event.target.value);
         }}
       /> */}
-
-      <Container maxWidth='lg' sx={{ marginTop: 10 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sx={{ fontSize: 16 }}>
-            <h1>All Course</h1>
-          </Grid>
-          {/* <Grid item xs={8}>
-            <Filter get={getFilter} courses={courses} />
-          </Grid> */}
-          <Grid item xs={12}>
-            <TextField
-              id='standard-basic'
-              label='Search For...'
-              variant='standard'
-              size='large'
-              sx={{ width: "95%" }}
-              type='text'
-              onChange={(event) => {
-                setSearch(event.target.value);
-              }}
-            />
-          </Grid>
-          {course}
-          {/* {body} */}
-        </Grid>
-      </Container>
-      {/* <Container maxWidth='sm'>
-        <h1>Admin Control</h1>
-        <AddCourse courses={courses} />
-      </Container> */}
-      <DrawerAdmain
-        majors={majors}
-        courses={courses}
-        handleSubmit={handleSubmit}
-      />
-
-      {/* <ul>
-        <h1>idaes</h1>
-        <li>core tag</li>
-        <li>move search bar and improve</li>
-        <li>Scdule</li>
-        <li>survy info</li>
-        <li>better filter ui</li>
-        
-      </ul> */}
     </div>
   );
 }

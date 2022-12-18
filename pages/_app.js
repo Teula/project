@@ -5,12 +5,18 @@ import React from "react";
 import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
 import NavBar from "../components/NavBar";
+import styles from "../styles/Home.module.css";
+
+import Typography from "@mui/material/Typography";
+import AdbIcon from "@mui/icons-material/Adb";
+import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <div>
-      <SessionProvider session={session}>
-        {/* <Head>
+      <div className={styles.ff}>
+        <SessionProvider session={session}>
+          {/* <Head>
           <>
             <link rel='preconnect' href='https://fonts.googleapis.com' />
             <link
@@ -28,9 +34,12 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
             />
           </>
         </Head> */}
-        <NavBar />
-        <Component {...pageProps} />
-      </SessionProvider>
+
+          <NavBar />
+          <Component {...pageProps} />
+        </SessionProvider>
+      </div>
+      {/*  */}
     </div>
   );
 }

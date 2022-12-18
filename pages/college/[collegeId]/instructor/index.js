@@ -116,7 +116,7 @@ export default function Index(props) {
   //     <CourseCard handleDelete={handleDelete} course={c} key={c.id} />
   //   </Grid>
   // ));
-  // const [instructor, setInstructor] = useState();
+  const [instructor, setInstructor] = useState();
 
   // const [body, setBody] = useState(() => {
   //   let course = courses.map((c) => (

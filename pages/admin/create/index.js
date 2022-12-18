@@ -16,7 +16,7 @@ import React, { useState } from "react";
 import SelectCollege from "../../../components/SelectCollege";
 
 export async function getStaticProps(context) {
-  const response = await fetch("http://localhost:3000/api/colleges", {
+  const response = await fetch("http://localhost:3000/api/college", {
     method: "GET",
   });
   const data = await response.json();
@@ -47,7 +47,7 @@ export default function Create(props) {
     setCollege(event.target.value);
   };
   const addCollege = async () => {
-    const response = await fetch("/api/admin/create", {
+    const response = await fetch("http://localhost:3000/api/admin/create", {
       method: "POST",
       body: JSON.stringify({ college }),
       headers: {
@@ -63,13 +63,16 @@ export default function Create(props) {
   };
   const addCourse = async () => {
     console.log(course);
-    const response = await fetch("/api/admin/create/course", {
-      method: "POST",
-      body: JSON.stringify({ course, collegeId }),
-      headers: {
-        "Content-type": "application/json",
-      },
-    });
+    const response = await fetch(
+      "http://localhost:3000/api/admin/create/course",
+      {
+        method: "POST",
+        body: JSON.stringify({ course, collegeId }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
     const data = await response.json;
     // console.log("post", data);
   };

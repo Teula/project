@@ -143,13 +143,15 @@ export default function ChartTab(props) {
   };
   return (
     <div className={styles.Chart}>
-      <Box sx={{ minWidth: 120 }}>
-        <FormControl fullWidth>
-          <InputLabel id='demo-simple-select-label'>Instructor</InputLabel>
+      <Doughnut data={data} />
+      <Box>
+        <FormControl sx={{ width: "100%", marginTop: 5 }}>
+          <InputLabel id='demo-simple-select-label'>
+            Choose Instructor
+          </InputLabel>
           <Select
             labelId='demo-simple-select-label'
             id='demo-simple-select'
-            defaultValue='all'
             value={filter}
             label='Filter'
             onChange={handleChange}>
@@ -164,7 +166,7 @@ export default function ChartTab(props) {
           </Select>
         </FormControl>
       </Box>
-      <Doughnut data={data} />
     </div>
   );
 }
+// rgb(126, 93, 192);

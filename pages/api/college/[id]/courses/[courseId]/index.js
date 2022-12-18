@@ -7,10 +7,21 @@ import { Instructor } from "../../../../../../models/Instructor";
 export default async function handler(req, res) {
   const { method, query } = req;
   dbConnect();
+  if (method == "GET") {
+    const course = await Course.findById(query.courseId).populate([
+      "majors",
+      "instructors",
+      "prerequisites",
+    ]);
+
+    res.status(200).json({ course });
+  }
   if (method == "POST") {
+    console.log("newComment", query.courseId);
     const user = await User.findById(req.body.session.user._id);
-    const course = await Course.findById(req.body.getCourse);
+    const course = await Course.findById(query.courseId);
     const instructor = await Instructor.findById(req.body.getIns);
+    console.log(query.courseId);
 
     const newComment = await Comment.create({
       user: user,
@@ -26,10 +37,19 @@ export default async function handler(req, res) {
       instructor: instructor,
     });
 
+    await user.comments.push(newComment);
+    await instructor.comments.push(newComment);
+    await course.comments.push(newComment);
+    await course.instructors.push(instructor);
+    await course.save();
+    await user.save();
+    await instructor.save();
     await newComment.save();
   }
   if (method == "DELETE") {
     await Course.findByIdAndRemove(req.body._id);
+
+    res.status(201).json({ query });
   }
   // console.log("uyes");
   //   const user = await User.find();

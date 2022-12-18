@@ -60,7 +60,7 @@ export default function LoginScreen() {
 
         <div className={styles.pageRegister}>Register</div>
       </div>
-      <h1 className={styles.title}>Create An Account</h1>
+      {/* <h1 className={styles.title}>Create An Account</h1> */}
       <div className={styles.mb}>
         {/* <label htmlFor='name'>Name</label> */}
         <TextField

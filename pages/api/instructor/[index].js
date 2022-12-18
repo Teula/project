@@ -18,7 +18,10 @@ export default async function handler(req, res) {
 
       break;
     case "GET":
-      res.status(200).json(query.index);
+      const instructor1 = await Instructor.findById(query.index).populate(
+        "comments"
+      );
+      res.status(200).json(instructor1);
       break;
     default:
       break;

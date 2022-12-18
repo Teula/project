@@ -4,21 +4,33 @@ import { signIn, useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 
 import { getError } from "../utils/error";
-import { toast } from "react-toastify";
+
 import { useRouter } from "next/router";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import styles from "../styles/Survey.module.css";
 import TextField from "@mui/material/TextField";
 
-export default function LoginScreen() {
+export default function Login() {
   const { data: session, status } = useSession();
 
   const router = useRouter();
   const { redirect } = router.query;
-
+  const notify = () =>
+    toast.error("Invalid Email or Password", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   useEffect(() => {
     if (session?.user) {
-      // router.push(redirect || "/");
+      router.push(redirect || "/");
     }
   }, [router, session, redirect]);
 
@@ -34,6 +46,7 @@ export default function LoginScreen() {
         email,
         password,
       });
+
       if (result.error) {
         toast.error(result.error);
       }
@@ -47,6 +60,7 @@ export default function LoginScreen() {
   }
   return (
     <form className={styles.logInGrid} onSubmit={handleSubmit(submitHandler)}>
+      <ToastContainer />
       <div className={styles.mb}>
         <div className={styles.pageLogIn2}>Log In</div>
 
@@ -54,7 +68,7 @@ export default function LoginScreen() {
           <div className={styles.pageRegister2}>Register</div>
         </Link>
       </div>
-      <h1 className={styles.title}>Log In</h1>
+      {/* <h1 className={styles.title}>Log In</h1> */}
       <div className={styles.mb}>
         {/* <label htmlFor='email'>Email</label> */}
         <TextField

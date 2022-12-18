@@ -3,6 +3,8 @@ import styles from "../styles/College.module.css";
 import { MenuItem, FormControl, InputLabel, Select } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import PersonIcon from "@mui/icons-material/Person";
+import LockIcon from "@mui/icons-material/Lock";
 
 export default function Infooo(props) {
   const router = useRouter();
@@ -12,7 +14,7 @@ export default function Infooo(props) {
         <div className={styles.InfoGrid}>
           <div className={styles.InfoBox}>
             <div className={styles.InfoIcon}>
-              <span className='material-symbols-outlined'>lock</span>
+              <LockIcon />
             </div>
             <p className={styles.InfoTitle}>Prerequisites</p>
             <ul className={styles.InfoList}>
@@ -29,7 +31,7 @@ export default function Infooo(props) {
           </div>
           <div className={styles.InfoBox}>
             <div className={styles.InfoIcon}>
-              <span className='material-symbols-outlined'>lock</span>
+              <PersonIcon />
             </div>
             <p className={styles.InfoTitle}>Instructor</p>
             <ul className={styles.InfoList}>
@@ -38,7 +40,7 @@ export default function Infooo(props) {
               <li>Computer Science I</li>
             </ul>
           </div>
-          <div className={styles.InfoBox}>
+          {/* <div className={styles.InfoBox}>
             <div className={styles.InfoIcon}>
               <span className='material-symbols-outlined'>lock</span>
             </div>
@@ -54,7 +56,7 @@ export default function Infooo(props) {
                 <span className={styles.Code}>#1234</span> Computer Science I
               </li>
             </ul>
-          </div>
+          </div> */}
           {/* <a href='#' className={styles.rateMee}>
             Rate Me
           </a> */}

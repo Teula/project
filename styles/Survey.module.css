@@ -2,6 +2,8 @@
   font-size: 3.2rem;
 }
 .title {
+  display: flex;
+  justify-content: flex-start;
   font-size: 32px;
   font-weight: 800;
 }
@@ -14,6 +16,9 @@
   width: 70%;
   margin-left: 15%;
   margin-top: 60px;
+  /* justify-content: center; */
+  /* align-self: center; */
+  padding-left: 200px;
 }
 .surveyQ {
   font-size: 18px;
@@ -49,8 +54,8 @@
 .btn {
   /* display: flex; */
   width: 280px;
-  height: 4.5rem;
-  background: linear-gradient(to bottom right, #ef4765, #ff9a5a);
+  height: 50px;
+  background-color: #7e5dc0;
   border: 0;
   border-radius: 12px;
   color: #ffffff;
@@ -79,7 +84,7 @@
 
 .btn:hover {
   box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.5),
-    -0.125rem -0.125rem 1rem rgba(239, 71, 101, 0.5),
+    -0.125rem -0.125rem 1rem rgb(126, 93, 192, 0.5),
     0.125rem 0.125rem 1rem rgba(255, 154, 90, 0.5);
 }
 .border1 {
@@ -93,7 +98,7 @@
   -moz-box-shadow: rgba(126, 126, 126, 0.25) 0px 4px 4px;
   height: 150px;
   width: 926px;
-  /* align-items: center; */
+  align-items: center;
   text-align: left;
   /* justify-content: center; */
   justify-content: space-between;
@@ -136,7 +141,7 @@
   box-shadow: rgba(126, 126, 126, 0.25) 0px 4px 4px;
   -webkit-box-shadow: rgba(126, 126, 126, 0.25) 0px 4px 4px;
   -moz-box-shadow: rgba(126, 126, 126, 0.25) 0px 4px 4px;
-  height: 350px;
+  height: auto;
   width: 926px;
   /* align-items: center; */
   text-align: left;
@@ -206,8 +211,8 @@
 .btnUpdate {
   /* display: flex; */
   width: 200px;
-  height: 4.5rem;
-  background: linear-gradient(to bottom right, #ef4765, #ff9a5a);
+  height: 50px;
+  background-color: #7e5dc0;
   border: 0;
   border-radius: 12px;
   color: #ffffff;
@@ -237,7 +242,7 @@
 
 .btnUpdate:hover {
   box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.5),
-    -0.125rem -0.125rem 1rem rgba(239, 71, 101, 0.5),
+    -0.125rem -0.125rem 1rem rgb(126, 93, 192, 0.5),
     0.125rem 0.125rem 1rem rgba(255, 154, 90, 0.5);
 }
 
@@ -270,7 +275,7 @@
   font-size: 16px;
   font-weight: 600;
   justify-content: center;
-  line-height: 1.25;
+  /* line-height: 1.25; */
   margin: 0;
   min-height: 3rem;
   padding: calc(0.875rem - 1px) calc(1.5rem - 1px);
@@ -281,13 +286,13 @@
   -webkit-user-select: none;
   touch-action: manipulation;
   vertical-align: baseline;
-  line-height: 30px;
+  line-height: 20px;
 }
 .pageRegister {
   width: 210px;
   height: 50px;
   background-clip: padding-box;
-  background-color: #fa6400;
+  background-color: #7e5dc0;
   border: 1px solid transparent;
   border-radius: 5px;
   box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
@@ -300,7 +305,7 @@
   font-size: 16px;
   font-weight: 600;
   justify-content: center;
-  line-height: 1.25;
+  /* line-height: 1.25; */
   margin: 0;
   min-height: 3rem;
   padding: calc(0.875rem - 1px) calc(1.5rem - 1px);
@@ -311,7 +316,7 @@
   -webkit-user-select: none;
   touch-action: manipulation;
   vertical-align: baseline;
-  line-height: 30px;
+  line-height: 20px;
 }
 /* #form {
   display: grid;
@@ -347,10 +352,10 @@
 } */
 .btnRegister {
   width: 420px;
-  height: 4.5rem;
-  background: linear-gradient(to bottom right, #fa6400, #fa6400);
+  height: 50px;
+  background: linear-gradient(to bottom right, #7e5dc0, #7e5dc0);
   border: 0;
-  border-radius: 12px;
+  border-radius: 5px;
   color: #ffffff;
   cursor: pointer;
   display: inline-block;
@@ -403,7 +408,7 @@
   width: 210px;
   height: 50px;
   background-clip: padding-box;
-  background-color: #fa6400;
+  background-color: #7e5dc0;
   border: 1px solid transparent;
   border-radius: 5px;
   box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
@@ -416,7 +421,7 @@
   font-size: 16px;
   font-weight: 600;
   justify-content: center;
-  line-height: 1.25;
+  /* line-height: 1; */
   margin: 0;
   min-height: 3rem;
   padding: calc(0.875rem - 1px) calc(1.5rem - 1px);
@@ -427,14 +432,14 @@
   -webkit-user-select: none;
   touch-action: manipulation;
   vertical-align: baseline;
-  line-height: 30px;
+  line-height: 20px;
 }
 
 .pageRegister2 {
   width: 210px;
   height: 50px;
   background-clip: padding-box;
-  background-color: #fa6400;
+  background-color: #7e5dc0;
   background-color: rgba(126, 126, 126);
   border: 1px solid transparent;
   border-radius: 5px;
@@ -448,7 +453,7 @@
   font-size: 16px;
   font-weight: 600;
   justify-content: center;
-  line-height: 1.25;
+  /* line-height: 1.25; */
   margin: 0;
   min-height: 3rem;
   padding: calc(0.875rem - 1px) calc(1.5rem - 1px);
@@ -459,5 +464,29 @@
   -webkit-user-select: none;
   touch-action: manipulation;
   vertical-align: baseline;
-  line-height: 30px;
+  line-height: 20px;
 }
+
+/* Colleges Page */
+
+/* .collegesImg {
+  width: 50px;
+  grid-area: 1 / 1 / 3 / 2;
+}
+.collegesImgSize {
+  width: 10px;
+  height: 50px;
+}
+.collegesTitle {
+}
+.collegesMajors {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.5fr 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+.majorsTitle {
+}
+.majorsList {
+} */

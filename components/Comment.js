@@ -73,7 +73,6 @@ import {
 import SchoolIcon from "@mui/icons-material/School";
 import CourseCard from "./CourseCard";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import DeleteIcon from "@mui/icons-material/Delete";
 import styles from "../styles/College.module.css";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
@@ -98,6 +97,19 @@ import ShareIcon from "@mui/icons-material/Share";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
+import FaceIcon from "@mui/icons-material/Face";
+import Avatar from "@mui/material/Avatar";
+import { deepOrange, deepPurple } from "@mui/material/colors";
+import EditIcon from "@mui/icons-material/Edit";
+import FlagIcon from "@mui/icons-material/Flag";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { pink } from "@mui/material/colors";
+import SvgIcon from "@mui/material/SvgIcon";
+import GradingIcon from "@mui/icons-material/Grading";
+import PermContactCalendarIcon from "@mui/icons-material/PermContactCalendar";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import GradeIcon from "@mui/icons-material/Grade";
+import HelpIcon from "@mui/icons-material/Help";
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   "&.MuiSpeedDial-directionDown, &.MuiSpeedDial-directionRight": {
@@ -145,7 +157,7 @@ export default function Comment(props) {
 
   if (session) {
     // console.log("test", session.user._id);
-    const Uid = session.user._id;
+    // const Uid = session.user._id;
     // const likefound = props.likes.indexOf(Uid) > -1;
     // console.log("found", likefound);
   }
@@ -276,21 +288,16 @@ export default function Comment(props) {
   //   console.log("hello");
   // }, []);
   const notify = () =>
-    toast.warn(
-      <h1>
-        <Link href='/login'>Log in</Link> like - dislike
-      </h1>,
-      {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      }
-    );
+    toast.warn(<Link href='/login'>Log in to like - dislike</Link>, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   const handleLike = (event) => {
     if (!session) {
       notify();
@@ -324,6 +331,7 @@ export default function Comment(props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  let db = new Date(props.created);
 
   // const userData = props.user.map((u) => {
   //   return (
@@ -333,12 +341,18 @@ export default function Comment(props) {
   //     </div>
   //   );
   // });
-
+  let page = false;
+  if (status == "authenticated" || status == "unauthenticated") {
+    page = true;
+  }
   return (
     <div>
-      <ToastContainer />
-      {/* {userData} */}
-      {/* <h1>
+      {page && (
+        <div>
+          {" "}
+          <ToastContainer />
+          {/* {userData} */}
+          {/* <h1>
         // if not hidden //
         {props.user[0].name}
         // tags
@@ -356,13 +370,17 @@ export default function Comment(props) {
         {props.user[0].major}
         {props.user[0].campus}
       </h1> */}
-
-      <div className={styles.commentsSpace}>
-        <div className={styles.commentCard}>
-          {/* <div className={styles.firstColumn}>
-            <div className={styles.logoComment}>
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHpP7PYm0K-7e3kXOK8U6F3pgSpDMkfWtU4g&usqp=CAU"></img>
+          <div className={styles.commentsSpace}>
+            <div className={styles.commentCard}>
+              <div className={styles.userComment}>
+                <Avatar></Avatar>
+                <div className={styles.commentName}>{props.user[0].name}</div>
+                <div className={styles.commentCreated}>
+                  {db.getDate()}/{db.getMonth()}/{db.getFullYear()}
+                </div>
               </div>
+              {/* <div className={styles.firstColumn}>
+            
             <div className={styles.qu}>
               <div className={styles.quality}>QUALITY</div>
               <div className={styles.commentRate}>40</div>
@@ -372,28 +390,147 @@ export default function Comment(props) {
               <div className={styles.commentRate}>40</div>
             </div>
           </div> */}
-          <div className={styles.secondColumn}>
-            <div className={styles.firstRowComment}>
               <div className={styles.infoComment}>
-                <div className={styles.infoCom1}>
-                  Ayman Alsahfy{props.user[0].name}
-                </div>
-                <div className={styles.infoCom}>{props.user[0].year}</div>
+                <Stack direction='row' spacing={1}>
+                  {props.user[0].major && (
+                    <Chip
+                      icon={<PermContactCalendarIcon />}
+                      color='primary'
+                      label={props.user[0].year}
+                      variant='outlined'
+                    />
+                  )}
 
-                <div className={styles.infoCom}>{props.user[0].major}</div>
-                <div className={styles.infoCom}>{props.user[0].campus}</div>
+                  {props.user[0].major && (
+                    <Chip
+                      icon={<SchoolIcon />}
+                      color='info'
+                      label={props.user[0].major}
+                      variant='outlined'
+                    />
+                  )}
+
+                  {props.user[0].campus && (
+                    <Chip
+                      icon={<FaceIcon />}
+                      color='error'
+                      label={props.user[0].campus}
+                      variant='outlined'
+                    />
+                  )}
+
+                  {props.user[0].isAdmin && (
+                    <Chip
+                      icon={<AdminPanelSettingsIcon />}
+                      color='warning'
+                      label='Admin'
+                    />
+                  )}
+                  {props.user[0].gpa && (
+                    <Chip
+                      icon={<GradeIcon />}
+                      color='primary'
+                      label={`GPA | ${props.user[0].gpa}`}
+                    />
+                  )}
+                  {props.grade && (
+                    <Chip
+                      icon={<GradingIcon />}
+                      color='success'
+                      label={`${props.grade} / 4`}
+                    />
+                  )}
+
+                  <Chip
+                    icon={<HelpIcon />}
+                    label={`Take again | ${props.again}`}
+                  />
+                </Stack>
+                {/* <div className={styles.infoCom}>{props.user[0].year}</div>
+
+            <div className={styles.infoCom}>{props.user[0].major}</div>
+            <div className={styles.infoCom}>{props.user[0].campus}</div> */}
 
                 {/* <div className={styles.infoCom}></div>
                 <div className={styles.infoCom}></div> */}
-                <div className={styles.infoCom}>No{props.user[0].isAdmin}</div>
-              </div>
-              <div className={styles.commentDate}>
-                <div>Updated: 12-11-2222{props.updated}</div>
-                <div>Created: 12-11-1111{props.created}</div>
-              </div>
+                {/* <div className={styles.infoCom}>No{props.user[0].isAdmin}</div>
+            <div className={styles.infoCom}>
+              <div className={styles.status}>GPA</div>
+              {props.user[0].gpa}
             </div>
-            <div className={styles.commentTags}>
-              <div className={styles.tags}>
+            <div className={styles.infoCom}>
+              <div className={styles.status}>Grade</div>A+
+              {props.grade}
+            </div>
+            <div className={styles.infoCom}>
+              <div className={styles.status}>Take again</div>Yes
+              {props.again}
+            </div> */}
+              </div>
+              {/* <div className={styles.commentDate}>
+            <div>Updated: 12-11-2222{props.updated}</div>
+          </div> */}
+              <div className={styles.commentBox}> {props.text}</div>
+              <div>
+                <IconButton
+                  onClick={handleLike}
+                  disabled={disableDislike}
+                  value='dislike'
+                  aria-label='fingerprint'
+                  color='error'
+                  sx={{ fontSize: 15 }}>
+                  {dislikes}
+                  <ThumbDownOffAltIcon sx={{ fontSize: 18 }} />
+                </IconButton>
+
+                <IconButton
+                  disabled={disablelike}
+                  onClick={handleLike}
+                  value='like'
+                  aria-label='fingerprint'
+                  color='success'
+                  sx={{ fontSize: 15, zIndex: 2 }}>
+                  {likes}
+                  <ThumbUpOffAltIcon sx={{ fontSize: 18 }} />
+                </IconButton>
+              </div>
+
+              <div className={styles.IconButtonDER}>
+                {props.currentUser == props.user[0]._id && (
+                  <div>
+                    <Chip
+                      onClick={() => {
+                        props.deleteComment(props.id);
+                      }}
+                      icon={
+                        <DeleteIcon sx={{ fontSize: 18, color: pink[500] }} />
+                      }
+                      label='Delete'
+                      variant='outlined'
+                      sx={{ border: 0 }}
+                    />
+                    <Chip
+                      icon={
+                        <EditIcon color='secondary' sx={{ fontSize: 18 }} />
+                      }
+                      label='Edit'
+                      variant='outlined'
+                      sx={{ border: 0 }}
+                    />
+                  </div>
+                )}
+
+                <Chip
+                  icon={<FlagIcon color='disabled' sx={{ fontSize: 18 }} />}
+                  label='Report'
+                  variant='outlined'
+                  sx={{ border: 0 }}
+                />
+              </div>
+              {/* <div className={styles.secondColumn}>
+            <div className={styles.firstRowComment}></div>
+            <div className={styles.commentTags}> */}
+              {/* <div className={styles.tags}>
                 <Tooltip title=''>
                   <Chip
                     label='SE'
@@ -436,36 +573,22 @@ export default function Comment(props) {
                     sx={{ fontSize: 10 }}
                   />
                 </Tooltip>
-              </div>
-            </div>
-            <div className={styles.infoComment1}>
-              <div className={styles.infoCom3}>
-                <div className={styles.status}>GPA</div>
-                {props.user[0].gpa}
-              </div>
-              <div className={styles.infoCom3}>
-                <div className={styles.status}>Grade</div>A+
-                {props.grade}
-              </div>
-              <div className={styles.infoCom3}>
-                <div className={styles.status}>Take again</div>Yes
-                {props.again}
-              </div>
-            </div>
-            <div className={styles.commentBox}> {props.text}</div>
-            {/* <div className={styles.commentBox}>
+              </div> */}
+              {/* </div> */}
+              {/* <div className={styles.infoComment1}></div> */}
+              {/* <div className={styles.commentBox}>
               {" "}
               sadfdssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcsavdsafdsfvaadcs
             </div> */}
-            {/* <div className={styles.commentBox}>
+              {/* <div className={styles.commentBox}>
               {" "}
               sadfdssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcsavdsafdsfvaadcs
             </div> */}
-            {/* <div className={styles.commentBox}> sadfdssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcsavdsafdsfvaadcs</div> */}
-            {/* <div className={styles.commentBox}> sadfdssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcsavdsafdsfvaadcs</div> */}
-            {/* <div className={styles.btn1}></div>
+              {/* <div className={styles.commentBox}> sadfdssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcsavdsafdsfvaadcs</div> */}
+              {/* <div className={styles.commentBox}> sadfdssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcssadfdsavdsafdsfvaadcsavdsafdsfvaadcs</div> */}
+              {/* <div className={styles.btn1}></div>
               <div className={styles.btn2}></div> */}
-            <div className={styles.commentLastRow}>
+              {/* <div className={styles.commentLastRow}> */}
               {/* <Button
                 variant='outlined'
                 startIcon={
@@ -482,30 +605,7 @@ export default function Comment(props) {
                 sx={{ fontSize: 15, zIndex: 3 }}>
                 {dislikes}
               </Button> */}
-              <div>
-                <IconButton
-                  onClick={handleLike}
-                  disabled={disableDislike}
-                  value='dislike'
-                  aria-label='fingerprint'
-                  color='error'
-                  sx={{ fontSize: 15 }}>
-                  {dislikes}
-                  <ThumbDownOffAltIcon sx={{ fontSize: 18 }} />
-                </IconButton>
-
-                <IconButton
-                  disabled={disablelike}
-                  onClick={handleLike}
-                  value='like'
-                  aria-label='fingerprint'
-                  color='success'
-                  sx={{ fontSize: 15, zIndex: 2 }}>
-                  {likes}
-                  <ThumbUpOffAltIcon sx={{ fontSize: 18 }} />
-                </IconButton>
-              </div>
-              <Box
+              {/* <Box
                 sx={{
                   transform: "translateZ(0px)",
                   flexGrow: 1,
@@ -529,11 +629,11 @@ export default function Comment(props) {
                     ))}
                   </StyledSpeedDial>
                 </Box>
-              </Box>
+              </Box> */}
+              {/* </div> */}
+              {/* </div> */}
             </div>
-          </div>
-        </div>
-        {/* <div className={styles.commentCard}>
+            {/* <div className={styles.commentCard}>
             <div className={styles.logoComment}>Logo</div>
             <div className={styles.infoComment}>
               <div>Grade</div>
@@ -543,7 +643,9 @@ export default function Comment(props) {
             <div className={styles.btn1}></div>
             <div className={styles.btn2}></div>
           </div> */}
-      </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

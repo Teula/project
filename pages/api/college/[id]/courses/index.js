@@ -2,6 +2,7 @@ import dbConnect from "../../../../../utils/dbConnect";
 import { Course } from "../../../../../models/Course";
 import { College } from "../../../../../models/College";
 import { Major } from "../../../../../models/Major";
+
 export default async function (req, res) {
   dbConnect();
   const { method, query } = req;
@@ -63,6 +64,7 @@ export default async function (req, res) {
       await college.courses.push(addedCourse);
       console.log(college.courses);
       await college.save();
+      res.status(201).json();
       break;
     }
   }

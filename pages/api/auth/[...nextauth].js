@@ -12,17 +12,18 @@ export const authOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
-      if (user?._id) token._id = user._id;
+      if (user?._id) token.user = user;
+
       if (user?.isAdmin) token.isAdmin = user.isAdmin;
       return token;
     },
     async session({ session, token }) {
-      if (token?._id) session.user._id = token._id;
+      session.user = token.user;
       if (token?.isAdmin) session.user.isAdmin = token.isAdmin;
       return session;
     },
   },
-  secret: "test",
+  // secret: "test",
   jwt: {
     secret: "test",
     encryption: true,
@@ -39,12 +40,18 @@ export const authOptions = {
           email: credentials.email,
         });
         if (user && bcryptjs.compareSync(credentials.password, user.password)) {
-          console.log(user);
+          console.log("...auth", user);
+
           return {
             _id: user._id,
             name: user.name,
             email: user.email,
             isAdmin: user.isAdmin,
+            image: "img",
+            year: user.year,
+            major: user.major,
+            campus: user.campus,
+            gpa: user.gpa,
           };
         }
         throw new Error("Invalid email or password");

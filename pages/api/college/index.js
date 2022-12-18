@@ -7,7 +7,8 @@ export default async function handler(req, res) {
 
   switch (method) {
     case "GET":
-      const colleges = await College.find();
+      const colleges = await College.find().populate("majors");
+      console.log(colleges);
       res.status(200).json({ colleges });
       break;
 

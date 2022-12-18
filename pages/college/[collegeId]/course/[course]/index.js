@@ -6,7 +6,7 @@ import ChartTab from "../../../../../components/ChartTab";
 import Comment from "../../../../../components/Comment";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { FitnessCenterOutlined } from "@material-ui/icons";
+import { FitnessCenterOutlined, Replay10 } from "@material-ui/icons";
 import NavBar from "../../../../../components/NavBar";
 import { useRef } from "react";
 import axios from "axios";
@@ -14,13 +14,15 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Fuse from "fuse.js";
 
+import PersonIcon from "@mui/icons-material/Person";
+import LockIcon from "@mui/icons-material/Lock";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { AgainChart } from "../../../../../components/AgainChart";
-// import Infooo from "../../../../../components/Infooo";
+import Infooo from "../../../../../components/Infooo";
 
 // export async function getStaticProps(context) {
 //   // const {params} = context
@@ -48,6 +50,10 @@ export async function getServerSideProps(context) {
   const response1 = await fetch(
     `http://localhost:3000/api/college/${context.params.collegeId}/instructors`
   );
+  const res1 = await axios.get(
+    `http://localhost:3000/api/college/${context.params.collegeId}/courses/${context.params.course}`
+  );
+
   const instructors = await response1.json();
   const data = await response.json();
   // const alldata = JSON.stringify(data);
@@ -59,6 +65,7 @@ export async function getServerSideProps(context) {
       alldata,
       test1: res.data.comments,
       instructors,
+      courseInfo: res1.data,
       // user: res.data.comments.map((u) => {
       //   return {
       //     id: u.user._id,
@@ -90,23 +97,25 @@ export async function getServerSideProps(context) {
 }
 
 export default function Id(props) {
-  console.log("this", props.instructors.instructors);
+  const editComment = (id) => {
+    axios.put(`http://localhost:3000/api/comment/${id}`);
+  };
+  const deleteComment = (id) => {
+    console.log("dddd", id);
+    axios.delete(`http://localhost:3000/api/comment/${id}`);
+  };
+  // console.log("this", props.instructors.instructors);
   const notify = () =>
-    toast.warn(
-      <h1>
-        <Link href='/login'>Log in</Link> to rate
-      </h1>,
-      {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      }
-    );
+    toast.warn(<Link href='/login'>Log in to rate</Link>, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   const { data: session, status } = useSession();
   const isMounted = useRef(false);
   const handleRating = async () => {
@@ -140,7 +149,7 @@ export default function Id(props) {
   // }, [status == "authenticated"]);
 
   // change tabs
-  const { alldata, test1 } = props;
+  const { alldata, test1, courseInfo } = props;
   const router = useRouter();
   // console.log("res11", test1[0].user);
 
@@ -151,7 +160,7 @@ export default function Id(props) {
   useEffect(() => {
     if (isMounted.current) {
       handleRating();
-      console.log("yesss");
+      // console.log("yesss");
     } else {
       isMounted.current = true;
     }
@@ -188,13 +197,28 @@ export default function Id(props) {
 
         break;
       case "1":
-        setTab(<AgainChart />);
+        setTab(
+          <AgainChart
+            data={alldata}
+            instructors={props.instructors.instructors}
+          />
+        );
         break;
       case "2":
-        setTab(<h1>tab3</h1>);
+        setTab(
+          <AgainChart
+            data={alldata}
+            instructors={props.instructors.instructors}
+          />
+        );
         break;
       case "3":
-        setTab(<h1>tab4</h1>);
+        setTab(
+          <AgainChart
+            data={alldata}
+            instructors={props.instructors.instructors}
+          />
+        );
         break;
     }
   };
@@ -202,7 +226,7 @@ export default function Id(props) {
   let uemal;
   if (session) {
     uemal = <p>Signed in as {session.user.name}</p>;
-    console.log(session);
+    // console.log(session);
   }
   const [isShown, setIsShown] = useState(false);
   const test = () => {
@@ -257,19 +281,72 @@ export default function Id(props) {
   };
 
   console.log("aalld", alldata);
+  let instructorCount;
+
+  instructorCount = courseInfo.course.instructors.map((n) => {
+    return {
+      name: n.name,
+    };
+  });
+
+  // const count = {};
+  // instructorCount.forEach((element) => {
+  //   count[element] = (count[element] || 0) + 1;
+  // });
+
+  // 👇️ {one: 3, two: 2, three: 1}
+
+  // let counter = {};
+  // instructorCount.forEach(function (name) {
+  //   var key = JSON.stringify(name);
+  //   counter[key] = (counter[key] || 0) + 1;
+  // });
+  const convert = (instructorCount) => {
+    const res = {};
+    instructorCount.forEach((obj) => {
+      const key = `${obj.name}`;
+      if (!res[key]) {
+        res[key] = { ...obj, count: 0 };
+      }
+      res[key].count += 1;
+    });
+    return Object.values(res);
+  };
+  console.log(convert(instructorCount));
+
+  let sortable = [];
+  for (var instructor in convert(instructorCount)) {
+    sortable.push([instructor, convert(instructorCount)[instructor]]);
+  }
+
+  sortable.sort(function (a, b) {
+    return a[1] - b[1];
+  });
+  console.log("sorted?", sortable);
+  // console.log("count1", counter);
+  // console.log("count", counter == courseInfo.course.instructors[0]);
+  let loadpage = false;
+  if (status == "authenticated" || status == "unauthenticated") {
+    loadpage = true;
+  }
   return (
     <div>
-      {(status == "authenticated" || status == "unauthenticated") && (
+      {loadpage && (
         <div>
-          {/* <NavBar /> */}
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            viewBox='0 0 1440 320'
+            className={styles.coursesBackGround}>
+            <path
+              fill='#7e5dc0'
+              fill-opacity='1'
+              d='M0,288L34.3,261.3C68.6,235,137,181,206,154.7C274.3,128,343,128,411,133.3C480,139,549,149,617,181.3C685.7,213,754,267,823,240C891.4,213,960,107,1029,64C1097.1,21,1166,43,1234,80C1302.9,117,1371,171,1406,197.3L1440,224L1440,0L1405.7,0C1371.4,0,1303,0,1234,0C1165.7,0,1097,0,1029,0C960,0,891,0,823,0C754.3,0,686,0,617,0C548.6,0,480,0,411,0C342.9,0,274,0,206,0C137.1,0,69,0,34,0L0,0Z'></path>
+          </svg>
           <section className={styles.Header}>
             <div className={styles.HeaderGrid}>
               <div className={styles.HeaderText}>
-                <h1 className={styles.HeaderTitle}>Course Name</h1>
-                <p>Course Number</p>
-              </div>
-              <div className={styles.HeaderImage}>
-                <img className={styles.MainImage} src='' alt='' />
+                <p className={styles.codeHeader}>#{courseInfo.course.code}</p>
+                <h1 className={styles.HeaderTitle}>{courseInfo.course.name}</h1>
               </div>
             </div>
           </section>
@@ -285,21 +362,73 @@ export default function Id(props) {
           I'll appear when you hover over the button.
         </div>
       )} */}
-            {/* <Infooo /> */}
+            <section className={styles.Info}>
+              <div className={styles.InfoGrid}>
+                <div className={styles.InfoBox}>
+                  <div className={styles.InfoIcon}>
+                    <LockIcon />
+                  </div>
 
-            {session && (
-              <div className={styles.rateMe}>
-                <Link
-                  href={`/college/${router.query.collegeId}/course/${router.query.course}/survey`}>
-                  Rate Me 1
-                </Link>
+                  <p className={styles.InfoTitle}>Prerequisites</p>
+                  <ul className={styles.InfoList}>
+                    {!courseInfo.course.prerequisites[0] && <li>None</li>}
+                    {courseInfo.course.prerequisites.map((c) => {
+                      return (
+                        <li key={c.name}>
+                          <span key={c.code} className={styles.Code}>
+                            #{c.code}
+                          </span>
+                          {c.name}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+                <div className={styles.InfoBox}>
+                  <div className={styles.InfoIcon}>
+                    <PersonIcon />
+                  </div>
+
+                  <p className={styles.InfoTitle}>Instructor</p>
+
+                  <ul className={styles.InfoList}>
+                    {convert(instructorCount).map((i) => {
+                      return (
+                        <li key={i.name}>
+                          {i.name} ({i.count})
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+                {/* <div className={styles.InfoBox}>
+            <div className={styles.InfoIcon}>
+              <span className='material-symbols-outlined'>lock</span>
+            </div>
+            <p className={styles.InfoTitle}>Unlock</p>
+            <ul className={styles.InfoList}>
+              <li>
+                <span className={styles.Code}>#1234</span> Computer Science I
+              </li>
+              <li>
+                <span className={styles.Code}>#1234</span> Computer Science I
+              </li>
+              <li>
+                <span className={styles.Code}>#1234</span> Computer Science I
+              </li>
+            </ul>
+          </div> */}
+                {/* <a href='#' className={styles.rateMee}>
+            Rate Me
+          </a> */}
+                {/* <div className={styles.rateMe}>
+            <Link
+              href={`/college/${router.collegeId}/course/${router.course}/survey`}>
+              Rate Me 1
+            </Link>
+          </div> */}
               </div>
-            )}
-            {!session && (
-              <div className={styles.rateMe} onClick={notify}>
-                <a href='#'>Rate Me 2</a>
-              </div>
-            )}
+            </section>
 
             <ToastContainer
               position='top-center'
@@ -320,44 +449,59 @@ export default function Id(props) {
                   className={styles.ChartBtn}
                   onClick={handleTab}
                   value={0}>
-                  Graph-1
+                  Grade
                 </button>
                 <button
                   className={styles.ChartBtn}
                   onClick={handleTab}
                   value={1}>
-                  Graph-2
+                  Take Again
                 </button>
                 <button
                   className={styles.ChartBtn}
                   onClick={handleTab}
                   value={2}>
-                  Graph-3
+                  Major
                 </button>
                 <button
                   className={styles.ChartBtn}
                   onClick={handleTab}
                   value={3}>
-                  Graph-4
+                  Year
                 </button>
                 <div className={styles.TabBox}>{tab}</div>
               </div>
             </section>
-            <Box sx={{ minWidth: 120 }}>
-              <FormControl fullWidth>
-                <InputLabel id='demo-simple-select-label'>Sort</InputLabel>
-                <Select
-                  labelId='demo-simple-select-label'
-                  id='demo-simple-select'
-                  value={filter}
-                  defaultValue=''
-                  label='Sort'
-                  onChange={handleFilter}>
-                  <MenuItem value='popular'>Popular</MenuItem>
-                  <MenuItem value='new'>New</MenuItem>
-                </Select>
-              </FormControl>
-            </Box>
+            <div className={styles.test}>
+              {session && (
+                <div className={styles.rateMe}>
+                  <Link
+                    href={`/college/${router.query.collegeId}/course/${router.query.course}/survey`}>
+                    Rate Me
+                  </Link>
+                </div>
+              )}
+              {!session && (
+                <div className={styles.rateMe} onClick={notify}>
+                  Rate Me
+                </div>
+              )}
+              <Box>
+                <FormControl sx={{ width: 250 }}>
+                  <InputLabel id='demo-simple-select-label'>Sort</InputLabel>
+                  <Select
+                    labelId='demo-simple-select-label'
+                    id='demo-simple-select'
+                    value={filter}
+                    defaultValue=''
+                    label='Sort'
+                    onChange={handleFilter}>
+                    <MenuItem value='popular'>Popular</MenuItem>
+                    <MenuItem value='new'>New</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
+            </div>
             {alldata.map((c) => {
               return (
                 <Comment
@@ -373,6 +517,7 @@ export default function Id(props) {
                   getdislike={getdislike}
                   grade={c.grade}
                   again={c.again}
+                  deleteComment={deleteComment}
                   currentUser={session ? session.user._id : null}
                 />
               );

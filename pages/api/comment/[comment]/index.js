@@ -8,14 +8,16 @@ import { User } from "../../../../models/User";
 export default async function handler(req, res) {
   const { method, body, query } = req;
   dbConnect();
+  let comment;
   switch (
     method // get like dislike
   ) {
     case "GET":
-      const comment = await Comment.findById(query.comment);
+      comment = await Comment.findById(query.comment);
       res.status(200).json({ comment });
-    case "POST": {
-      const comment = await Comment.findById(query.comment);
+      break;
+    case "POST":
+      comment = await Comment.findById(query.comment);
       console.log("r", body);
       if (body.like == 1) {
         comment.likes.push(body.Uid);
@@ -26,9 +28,25 @@ export default async function handler(req, res) {
         comment.likes.pull(body.Uid);
       }
       comment.save();
-    }
+      res.status(201).json({ comment });
+      break;
+
+    case "DELETE":
+      console.log("deleing");
+      // await Comment.findOneAndDelete(query.comment, function (err, docs) {
+      //   if (err) {
+      //     console.log(err);
+      //   } else {
+      //     console.log("Deleted User : ", docs);
+      //   }
+      // // });
+      // await Comment.find({ _id: query.comment }).remove(callback);
+
+      await Comment.findById(query.comment).deleteOne();
+      break;
+    // res.status(201).json({ comment });
   }
-  const comment = await Comment.findById();
+  comment = await Comment.findById();
 
   console.log(comment);
   res.status(200).json({ comment });
