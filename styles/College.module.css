@@ -174,7 +174,7 @@
   grid-column-gap: 0px;
   grid-row-gap: 0px;
   max-width: 100%;
-  align-items: center;
+  /* align-items: center; */
   justify-items: center;
   padding-bottom: 60px;
   /* align-content: center;
@@ -516,6 +516,7 @@
   line-height: 1.5;
   word-break: break-all;
   margin-left: 45px;
+  /* height: 100px; */
   /* min-height: 80px; */
   /* padding: 1rem; */
 }
@@ -558,9 +559,22 @@
   padding: 5px;
   /* justify-content: flex-start; */
 }
+.adminDelete1 {
+  /* width: 345px; */
+  display: flex;
+  /* padding: 5px; */
+  /* justify-content: flex-start; */
+}
 .lastRaw {
   /* width: 100%; */
   display: flex;
+  justify-content: space-between;
+}
+.lastRaw1 {
+  /* height: 100%; */
+  /* width: 100%; */
+  display: flex;
+  /* align-content: flex-end; */
   justify-content: space-between;
 }
 /* .chatOverStyle {

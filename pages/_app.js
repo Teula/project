@@ -38,6 +38,36 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
           <NavBar />
           <Component {...pageProps} />
         </SessionProvider>
+        <footer className={styles.footer}>
+          <div className={styles.footerContent}>
+            Copyright © 2022 Ayman Alsahfy - Faisal Almohaisen
+            <div className={styles.footerBrand}>
+              <ImportContactsIcon
+                sx={{
+                  display: { xs: "none", md: "flex" },
+                  mr: 1,
+                  color: "#ff589e",
+                }}
+              />
+              <Typography
+                variant='h6'
+                noWrap
+                component='a'
+                href='/'
+                sx={{
+                  mr: 2,
+                  display: { xs: "none", md: "flex" },
+                  fontFamily: "monospace",
+                  fontWeight: 700,
+                  letterSpacing: ".3rem",
+                  color: "#ff589e",
+                  textDecoration: "none",
+                }}>
+                PMU
+              </Typography>
+            </div>
+          </div>
+        </footer>
       </div>
       {/*  */}
     </div>

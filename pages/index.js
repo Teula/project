@@ -7,6 +7,7 @@ import AdbIcon from "@mui/icons-material/Adb";
 import ThumbsUpDownIcon from "@mui/icons-material/ThumbsUpDown";
 import TipsAndUpdatesIcon from "@mui/icons-material/TipsAndUpdates";
 import ConnectWithoutContactIcon from "@mui/icons-material/ConnectWithoutContact";
+import Link from "next/link";
 
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 
@@ -23,7 +24,9 @@ export default function Home() {
         role='img'
         aria-label='Image Description'>
         <h1>The PMU Experience</h1>
-        <button>View PMU Colleges</button>
+        <Link href={"/college"}>
+          <button>View PMU Colleges</button>
+        </Link>
       </section>
       {/*<svg
         xmlns='http://www.w3.org/2000/svg'
@@ -104,9 +107,9 @@ export default function Home() {
       </svg> */}
 
       {/* <img src='/Photo.png'></img> */}
-      <main className={styles.main}>
-        {/* <LoginBtn /> */}
-        {/* <h1 className={styles.title}>
+      {/* <main className={styles.main}> */}
+      {/* <LoginBtn /> */}
+      {/* <h1 className={styles.title}>
           Welcome to <a href='https://nextjs.org'>Next.js!</a>
           <a href='faisal@gmail.com'>faisal</a>
         </h1>
@@ -143,37 +146,7 @@ export default function Home() {
             </p>
           </a>
         </div> */}
-      </main>
-      <footer className={styles.footer}>
-        <div className={styles.footerContent}>
-          Copyright © 2022 Ayman Alsahfy - Faisal Almohaisen
-          <div className={styles.footerBrand}>
-            <ImportContactsIcon
-              sx={{
-                display: { xs: "none", md: "flex" },
-                mr: 1,
-                color: "#ff589e",
-              }}
-            />
-            <Typography
-              variant='h6'
-              noWrap
-              component='a'
-              href='/'
-              sx={{
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "#ff589e",
-                textDecoration: "none",
-              }}>
-              PMU
-            </Typography>
-          </div>
-        </div>
-      </footer>
+      {/* </main> */}
     </div>
   );
 }

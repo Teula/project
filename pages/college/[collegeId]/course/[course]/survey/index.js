@@ -28,6 +28,8 @@ import Typography from "@mui/joy/Typography";
 import CropSquareIcon from "@mui/icons-material/CropSquare";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Alert from "@mui/material/Alert";
+import Stack from "@mui/material/Stack";
 import Link from "next/link";
 import FormHelperText from "@mui/material/FormHelperText";
 export async function getServerSideProps(context) {
@@ -48,21 +50,16 @@ export async function getServerSideProps(context) {
 
 export default function SurveyPage(props) {
   const notify = () =>
-    toast.warn(
-      <h1>
-        <Link href='/login'>Log in</Link> to rate
-      </h1>,
-      {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      }
-    );
+    toast.warn("Please make sure to fill the form", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   const { data: session, status } = useSession();
   const router = useRouter();
 
@@ -146,33 +143,46 @@ export default function SurveyPage(props) {
     console.log("tste", rateOne);
   };
   const handleSubmit = async () => {
-    console.log("post", comment, session.user);
-    const data = await fetch(
-      `http://localhost:3000/api/college/${router.query.collegeId}/courses/${router.query.course}`,
-      // /api/college/620dfbb23d2d0a1b624131a8/courses/620dfbb23d2d0a1b624131b6
-      {
-        method: "POST",
-        body: JSON.stringify({
-          comment,
-          session,
-          ratePro,
-          diffPro,
-          takeAgain,
-          courseDiff,
-          grade,
-          hide,
-          getIns,
-          getCourse,
-        }),
-        headers: {
-          "Content-type": "application/json",
-        },
-      }
-    );
-    router.push(
-      `http://localhost:3000/college/${router.query.collegeId}/course/${router.query.course}`
-    );
-    // notify();
+    if (
+      comment &&
+      session &&
+      ratePro &&
+      diffPro &&
+      takeAgain &&
+      courseDiff &&
+      grade &&
+      hide &&
+      getIns
+    ) {
+      console.log("post", comment, session.user);
+      const data = await fetch(
+        `http://localhost:3000/api/college/${router.query.collegeId}/courses/${router.query.course}`,
+        // /api/college/620dfbb23d2d0a1b624131a8/courses/620dfbb23d2d0a1b624131b6
+        {
+          method: "POST",
+          body: JSON.stringify({
+            comment,
+            session,
+            ratePro,
+            diffPro,
+            takeAgain,
+            courseDiff,
+            grade,
+            hide,
+            getIns,
+            getCourse,
+          }),
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      );
+      router.push(
+        `http://localhost:3000/college/${router.query.collegeId}/course/${router.query.course}`
+      );
+    } else {
+      notify();
+    }
   };
 
   const [again, setAgain] = React.useState("flex-start");
@@ -439,7 +449,7 @@ export default function SurveyPage(props) {
                     <Select
                       labelId='demo-simple-select-label'
                       id='demo-simple-select'
-                      value={grade ? grade : 4}
+                      value={grade ? grade : ""}
                       label='Grade'
                       onChange={(event) => {
                         setGrade(event.target.value);
@@ -533,6 +543,7 @@ export default function SurveyPage(props) {
           </div>
         </div>
       )}
+      {!session && <Alert severity='info'>Log in to continue!</Alert>}
     </div>
   );
 }

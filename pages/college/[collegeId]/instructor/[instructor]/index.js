@@ -38,27 +38,34 @@ import Infooo from "../../../../../components/Infooo";
 // }
 
 export async function getServerSideProps(context) {
-  // console.log(context.params.course);
   const response = await fetch(
-    `http://localhost:3000/api/course/${context.params.course}/comment`
-  );
-  const res = await axios.get(
-    `http://localhost:3000/api/course/${context.params.course}/comment`
-  );
-  // console.log("res", res.data.comments[0].user[0].email);
-  //
-  const response1 = await fetch(
-    `http://localhost:3000/api/college/${context.params.collegeId}/instructors`
-  );
-  const res1 = await axios.get(
-    `http://localhost:3000/api/college/${context.params.collegeId}/courses/${context.params.course}`
+    `http://localhost:3000/api/instruc/${context.params.instructor}`
   );
 
-  const instructors = await response1.json();
+  /////////////////////////////////////////////////////
+  // console.log(context.params.course);
+  // const response = await fetch(
+  //   `http://localhost:3000/api/instructor/${context.params.instructor}/comment`
+  // );
+
+  // const res = await axios.get(
+  //   `http://localhost:3000/api/instructor/${context.params.instructor}/comment`
+  // );
+  // // console.log("res", res.data.comments[0].user[0].email);
+  // //
+  // const response1 = await fetch(
+  //   `http://localhost:3000/api/college/${context.params.collegeId}/instructors` // get courses insetd
+  // );
+  // const res1 = await axios.get(
+  //   `http://localhost:3000/api/college/${context.params.collegeId}/instructors/${context.params.instructor}` // fix
+  // );
+
+  // const instructors = await response1.json();
   const data = await response.json();
   // const alldata = JSON.stringify(data);
   const alldata = JSON.parse(JSON.stringify(data.comments));
-
+  console.log("alldata", alldata);
+  /////////////////////////////////////////////////////////////
   // console.log(alldata);
   return {
     props: {
@@ -459,14 +466,12 @@ export default function Id(props) {
                   Take Again
                 </button>
                 <button
-                  disabled
                   className={styles.ChartBtn}
                   onClick={handleTab}
                   value={2}>
                   Major
                 </button>
                 <button
-                  disabled
                   className={styles.ChartBtn}
                   onClick={handleTab}
                   value={3}>
@@ -508,7 +513,6 @@ export default function Id(props) {
             {alldata.map((c) => {
               return (
                 <Comment
-                  instructor={c.instructor}
                   key={c._id}
                   text={c.text}
                   id={c._id}

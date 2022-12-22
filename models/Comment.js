@@ -45,6 +45,7 @@ const CommentSchema = new mongoose.Schema(
     hide: {
       type: String,
     },
+    flaged: { type: Boolean },
 
     replies: [
       {

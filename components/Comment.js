@@ -110,6 +110,9 @@ import PermContactCalendarIcon from "@mui/icons-material/PermContactCalendar";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import GradeIcon from "@mui/icons-material/Grade";
 import HelpIcon from "@mui/icons-material/Help";
+import Textarea from "@mui/joy/Textarea";
+import CloseIcon from "@mui/icons-material/Close";
+import SendTwoToneIcon from "@mui/icons-material/SendTwoTone";
 
 const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
   "&.MuiSpeedDial-directionDown, &.MuiSpeedDial-directionRight": {
@@ -232,6 +235,12 @@ export default function Comment(props) {
       }
     }
   };
+  let hideName;
+  if (props.hide == "Yes") {
+    hideName = true;
+  } else {
+    hideName = false;
+  }
 
   // useEffect(() => {
   //   if (isMounted.current) {
@@ -287,6 +296,8 @@ export default function Comment(props) {
   //   }
   //   console.log("hello");
   // }, []);
+  const [showedit, setShowedit] = useState(false);
+  const [editedComment, setEditedComment] = useState(props.text);
   const notify = () =>
     toast.warn(<Link href='/login'>Log in to like - dislike</Link>, {
       position: "top-center",
@@ -332,6 +343,12 @@ export default function Comment(props) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   let db = new Date(props.created);
+  let showSettings = false;
+  if (session) {
+    if (props.currentUser == props.user[0]._id || session.user.isAdmin) {
+      showSettings = true;
+    }
+  }
 
   // const userData = props.user.map((u) => {
   //   return (
@@ -374,11 +391,18 @@ export default function Comment(props) {
             <div className={styles.commentCard}>
               <div className={styles.userComment}>
                 <Avatar></Avatar>
-                <div className={styles.commentName}>{props.user[0].name}</div>
+                <div className={styles.commentName}>
+                  {hideName ? "[Hidden Name]" : props.user[0].name}
+                  {/* {props.user[0].name} */}
+                </div>
                 <div className={styles.commentCreated}>
                   {db.getDate()}/{db.getMonth()}/{db.getFullYear()}
                 </div>
+                <div className={styles.commentCreated}>
+                  {props.instructor[0].name}
+                </div>
               </div>
+
               {/* <div className={styles.firstColumn}>
             
             <div className={styles.qu}>
@@ -470,8 +494,53 @@ export default function Comment(props) {
               {/* <div className={styles.commentDate}>
             <div>Updated: 12-11-2222{props.updated}</div>
           </div> */}
-              <div className={styles.commentBox}> {props.text}</div>
+
+              {showedit ? (
+                <div className={styles.commentBox}>
+                  <Textarea
+                    type='text'
+                    value={editedComment}
+                    onChange={(event) => setEditedComment(event.target.value)}
+                    // minRows={7}
+                    placeholder='Edit'
+                    // style='width: 80%;'
+                    sx={{ width: "100%" }}
+                  />
+                  <Chip
+                    icon={<CloseIcon sx={{ fontSize: 18 }} />}
+                    onClick={() => setShowedit(false)}
+                    color='secondary'
+                    label='close'
+                    variant='outlined'
+                    sx={{ border: 0 }}
+                  />
+                  <Chip
+                    icon={<SendTwoToneIcon sx={{ fontSize: 18 }} />}
+                    onClick={() => props.editComment(props.id, editedComment)}
+                    color='primary'
+                    label='submit'
+                    variant='outlined'
+                    sx={{ border: 0 }}
+                  />
+                </div>
+              ) : (
+                <div type='output' className={styles.commentBox}>
+                  {props.text}
+                </div>
+              )}
+
               <div>
+                {/* <Chip
+                  onClick={handleLike}
+                  disabled={disableDislike}
+                  icon={<ThumbDownOffAltIcon sx={{ fontSize: 18 }} />}
+                  label={`${dislikes}`}
+                  variant={disableDislike ? "filled" : "outlined"}
+                  color='error'
+                  value='dislike'
+                  sx={{ border: 0 }}
+                /> */}
+
                 <IconButton
                   onClick={handleLike}
                   disabled={disableDislike}
@@ -482,6 +551,15 @@ export default function Comment(props) {
                   {dislikes}
                   <ThumbDownOffAltIcon sx={{ fontSize: 18 }} />
                 </IconButton>
+
+                {/* <Chip
+                  icon={<SendTwoToneIcon sx={{ fontSize: 18 }} />}
+                  onClick={() => props.editComment(props.id, editedComment)}
+                  color='primary'
+                  label='Likes'
+                  variant='outlined'
+                  sx={{ border: 0 }}
+                /> */}
 
                 <IconButton
                   disabled={disablelike}
@@ -496,7 +574,7 @@ export default function Comment(props) {
               </div>
 
               <div className={styles.IconButtonDER}>
-                {props.currentUser == props.user[0]._id && (
+                {showSettings && (
                   <div>
                     <Chip
                       onClick={() => {
@@ -510,6 +588,9 @@ export default function Comment(props) {
                       sx={{ border: 0 }}
                     />
                     <Chip
+                      onClick={() => {
+                        setShowedit(true);
+                      }}
                       icon={
                         <EditIcon color='secondary' sx={{ fontSize: 18 }} />
                       }
@@ -519,13 +600,14 @@ export default function Comment(props) {
                     />
                   </div>
                 )}
-
+                {/* 
                 <Chip
+                  onClick={() => {}}
                   icon={<FlagIcon color='disabled' sx={{ fontSize: 18 }} />}
                   label='Report'
                   variant='outlined'
                   sx={{ border: 0 }}
-                />
+                /> */}
               </div>
               {/* <div className={styles.secondColumn}>
             <div className={styles.firstRowComment}></div>

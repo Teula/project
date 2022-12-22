@@ -6,12 +6,13 @@ import { User } from "../../../../models/User";
 export default async function handler(req, res) {
   const { method, body } = req;
   dbConnect();
+
   if (method == "GET") {
+    console.log("yes");
     dbConnect();
-    const comments = await Comment.find({ course: req.query.course }).populate([
-      "user",
-      "instructor",
-    ]);
+    const comments = await Comment.find({
+      instructor: req.query.id,
+    }).populate("user");
     // .populate("majors");
     // .populate([
     //   {

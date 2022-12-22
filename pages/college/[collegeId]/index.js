@@ -2,6 +2,9 @@ import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styles from "../../../styles/Home.module.css";
+import ConnectWithoutContactIcon from "@mui/icons-material/ConnectWithoutContact";
+import Typography from "@mui/material/Typography";
+import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 
 // export async function getStaticProps(context) {
 //   const { params } = context;
@@ -36,10 +39,11 @@ export default function Index() {
           {/* <div className={styles.icon}>
             <i><img src="assets/images/featured-item-01.png" alt=""></i> 
           </div> */}
-
-          <img
-            className={styles.coursesPageImg}
-            src='https://images.unsplash.com/photo-1509475826633-fed577a2c71b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80'></img>
+          <Link href={`/college/${router.query.collegeId}/instructor`}>
+            <img
+              className={styles.coursesPageImg}
+              src='https://images.unsplash.com/photo-1509475826633-fed577a2c71b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80'></img>
+          </Link>
 
           <h5 className={styles.featuresTitle1}>instructors</h5>
         </div>
@@ -55,6 +59,36 @@ export default function Index() {
           <h5 className={styles.featuresTitle1}>Courses</h5>
         </div>
       </div>
+      {/* <footer className={styles.footer}>
+        <div className={styles.footerContent}>
+          Copyright © 2022 Ayman Alsahfy - Faisal Almohaisen
+          <div className={styles.footerBrand}>
+            <ImportContactsIcon
+              sx={{
+                display: { xs: "none", md: "flex" },
+                mr: 1,
+                color: "#ff589e",
+              }}
+            />
+            <Typography
+              variant='h6'
+              noWrap
+              component='a'
+              href='/'
+              sx={{
+                mr: 2,
+                display: { xs: "none", md: "flex" },
+                fontFamily: "monospace",
+                fontWeight: 700,
+                letterSpacing: ".3rem",
+                color: "#ff589e",
+                textDecoration: "none",
+              }}>
+              PMU
+            </Typography>
+          </div>
+        </div>
+      </footer> */}
     </div>
   );
 }

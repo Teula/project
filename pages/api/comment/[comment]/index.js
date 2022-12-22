@@ -30,6 +30,12 @@ export default async function handler(req, res) {
       comment.save();
       res.status(201).json({ comment });
       break;
+    case "PUT":
+      console.log("comment", query.comment);
+      console.log("edit", body.newComment);
+      await Comment.findByIdAndUpdate(query.comment, { text: body.newComment });
+
+      break;
 
     case "DELETE":
       console.log("deleing");
@@ -46,6 +52,7 @@ export default async function handler(req, res) {
       break;
     // res.status(201).json({ comment });
   }
+
   comment = await Comment.findById();
 
   console.log(comment);

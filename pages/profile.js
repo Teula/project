@@ -13,6 +13,7 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 export async function getServerSideProps(context) {
   const res = await axios.get(`http://localhost:3000/api/majors`);
@@ -74,7 +75,10 @@ export default function Profile(props) {
       <div>
         <ToastContainer />
         <div className={styles.profileGrid}>
-          <div className={styles.profileTitle}>[icon]Profile Settings</div>
+          <div className={styles.profileTitle}>
+            <SettingsIcon sx={{ fontSize: 35 }} />
+            Profile Settings
+          </div>
           <div className={styles.profileRows}>
             <TextField
               value={uname}
@@ -88,6 +92,7 @@ export default function Profile(props) {
               sx={{ maxWidth: 320, minWidth: 320, fontSize: 400 }}
             />
             <TextField
+              disabled
               id='filled-basic'
               label='Last Name'
               variant='filled'

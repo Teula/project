@@ -19,6 +19,7 @@ import {
   Box,
 } from "@mui/material";
 import { useSession } from "next-auth/react";
+import Person4Icon from "@mui/icons-material/Person4";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import styles from "../styles/College.module.css";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
@@ -42,7 +43,7 @@ const ExpandMore = styled((props) => {
 import SchoolIcon from "@mui/icons-material/School";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-export default function CourseCard(props) {
+export default function InstructorCard(props) {
   const { data: session, status } = useSession();
   const { course } = props;
   console.log(course);
@@ -104,7 +105,7 @@ export default function CourseCard(props) {
   // };
   return (
     <div>
-      <Card sx={{ maxWidth: 345, minHeight: 129 }}>
+      <Card sx={{ maxWidth: 345, minHeight: 100 }}>
         {/* <CardMedia
           component='img'
           height='140'
@@ -120,18 +121,18 @@ export default function CourseCard(props) {
                 fontSize: 18,
               }}>
               {course.name}
-
-              <Chip
-                label={`#${course.code}`}
+              <Person4Icon />
+              {/* <Chip
+                label=''
                 variant='outlined'
                 color='secondary'
                 size='large'
                 sx={{ fontSize: 12, borderRadius: 1 }}
-              />
+              /> */}
             </Box>
           </Typography>
           <Box sx={{ display: "flex" }}>
-            {course.majors.map((m) => (
+            {/* {course.majors.map((m) => (
               // <Grid item xs={3} key={m.tag}>
               <Tooltip key={m.tag} title={m.name}>
                 <Chip
@@ -144,7 +145,7 @@ export default function CourseCard(props) {
                 />
               </Tooltip>
               // </Grid>
-            ))}
+            ))} */}
           </Box>
         </CardContent>
         {/* <CardActions>
@@ -155,7 +156,7 @@ export default function CourseCard(props) {
         <Collapse in={expanded} timeout='auto' unmountOnExit>
           <CardContent>
             <Typography>
-              {course.prerequisites.map((p) => (
+              {/* {course.prerequisites.map((p) => (
                 <Grid key={p.name} container spacing={0.5}>
                   <Grid key={p.name} item xs={8}>
                     {p.name}
@@ -170,7 +171,7 @@ export default function CourseCard(props) {
                     />
                   </Grid>
                 </Grid>
-              ))}
+              ))} */}
             </Typography>
           </CardContent>
         </Collapse>
@@ -184,8 +185,8 @@ export default function CourseCard(props) {
             <Typography>Greetings of the day :)</Typography>
           </AccordionDetails>
         </Accordion> */}
-        <div className={styles.lastRaw}>
-          <div className={styles.adminDelete}>
+        <div className={styles.lastRaw1}>
+          <div className={styles.adminDelete1}>
             <div className={styles.chatCount}>
               {/* <SentimentVerySatisfiedIcon
                 color='success'

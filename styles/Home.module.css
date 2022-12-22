@@ -122,7 +122,7 @@
 .featuresSmallItem {
   /* cursor: pointer; */
   width: 450px;
-  height: 250px;
+  height: 200px;
   display: block;
   background: #ffffff;
   box-shadow: 0 2px 48px 0 rgba(0, 0, 0, 0.1);
@@ -150,9 +150,9 @@
 }
 
 .featuresSmallItem1 {
-  /* cursor: pointer; */
+  cursor: pointer;
   width: 765px;
-  height: 450px;
+  /* height: 450px; */
   display: block;
   background: #ffffff;
   box-shadow: 0 2px 48px 0 rgba(0, 0, 0, 0.1);
@@ -168,6 +168,7 @@
   position: relative;
   margin-top: 12%;
   margin-left: 1%;
+  margin-bottom: 5%;
 }
 .coursesPageImg {
   width: 100%;
@@ -176,7 +177,7 @@
   height: 30px;
   margin-top: 10px;
   font-size: 20px;
-  box-shadow: 0 2px 48px 0 rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 2px 48px 0 rgba(0, 0, 0, 0.1); */
 }
 .btnLogInHome {
   width: 100px;
@@ -272,7 +273,7 @@
   width: 100%;
   /* color: white; */
   text-align: center;
-  /* margin-top: 5%; */
+  margin-top: 20%;
   display: flex;
   flex: 1;
   padding: 1rem 0;
