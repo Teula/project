@@ -416,7 +416,7 @@ export default function Comment(props) {
           </div> */}
               <div className={styles.infoComment}>
                 <Stack direction='row' spacing={1}>
-                  {props.user[0].major && (
+                  {props.user[0].year && (
                     <Chip
                       icon={<PermContactCalendarIcon />}
                       color='primary'

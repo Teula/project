@@ -53,7 +53,7 @@ export default function NavBar() {
 
   return (
     <div>
-      <AppBar sx={{ bgcolor: "#7e5dc0", minWidth: "100%" }}>
+      <AppBar position='static' sx={{ bgcolor: "#7e5dc0", minWidth: "100%" }}>
         <Container maxWidth='xl'>
           <Toolbar disableGutters>
             <ImportContactsIcon

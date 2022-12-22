@@ -1,7 +1,7 @@
 .body {
   height: 100%;
-  width: 55%;
-  margin-left: 22.5%;
+  width: 70%;
+  margin-left: 15%;
   /* padding-right: 450px; */
   /* backgrou/nd-color: #cee3e7; */
 }
@@ -118,6 +118,7 @@
 .coursesBackGround {
   z-index: 1;
   position: absolute;
+  /* margin-top: 68.5px; */
 }
 .Header {
   z-index: 2;
@@ -403,6 +404,7 @@
   margin: 5px 0px 10px;
   min-height: 31px;
   align-items: center;
+  /* width: 60%; */
   /* font-size: 2rem; */
 }
 /* .infoComment1 {
@@ -607,4 +609,10 @@
   opacity: 1;
   background-image: radial-gradient(#444cf7 0.55px, #ffffff 0.55px);
   background-size: 11px 11px;
+}
+.addInsta {
+  display: flex;
+  /* align-content: center; */
+  justify-content: center;
+  margin-top: 4%;
 }

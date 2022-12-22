@@ -12,9 +12,24 @@ import styles from "../../../../styles/College.module.css";
 import TextField from "@mui/material/TextField";
 import Link from "next/link";
 import Router from "next/router";
-
+import Textarea from "@mui/joy/Textarea";
 import { useSession } from "next-auth/react";
 import InstructorCard from "../../../../components/InstructorCard";
+import {
+  Card,
+  CardMedia,
+  CardContent,
+  Typography,
+  CardActions,
+  Chip,
+  Collapse,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  IconButton,
+  Stack,
+  Tooltip,
+} from "@mui/material";
 
 export async function getStaticProps(context) {
   console.log("name", context.params.collegeId);
@@ -166,14 +181,25 @@ export default function Index(props) {
     if (session) {
       if (session.user.isAdmin) {
         admin = (
-          <div>
-            <input
+          <div className={styles.addInsta}>
+            <Textarea
               type='text'
               onChange={(event) => {
                 setInstructor(event.target.value);
               }}
+              // minRows={7}
+              // placeholder='Edit'
+              // style='width: 80%;'
+              sx={{ width: "50%" }}
             />
-            <button onClick={handleInstructorSubmit}>Add instructor</button>
+            <Chip
+              // icon={<CloseIcon sx={{ fontSize: 18 }} />}
+              onClick={handleInstructorSubmit}
+              color='secondary'
+              label='Add instructor'
+              variant='outlined'
+              sx={{ marginLeft: 5 }}
+            />
           </div>
         );
       }

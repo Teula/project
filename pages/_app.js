@@ -38,7 +38,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
           <NavBar />
           <Component {...pageProps} />
         </SessionProvider>
-        <footer className={styles.footer}>
+        {/* <footer className={styles.footer}>
           <div className={styles.footerContent}>
             Copyright © 2022 Ayman Alsahfy - Faisal Almohaisen
             <div className={styles.footerBrand}>
@@ -67,7 +67,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
               </Typography>
             </div>
           </div>
-        </footer>
+        </footer> */}
       </div>
       {/*  */}
     </div>
